@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-rm -rfv bin 
+rm -rfv bin/extensions.zip bin/extensions
 mkdir -p bin/extensions
 
 cargo build -p rust-parameters-lambda-extension --bin parameters-lambda-extension --release --target x86_64-unknown-linux-musl
@@ -12,5 +12,5 @@ chmod +x bin/extensions/parameters-lambda-extension
 
 pushd bin
 zip -r extensions.zip .
-# rm extensions -rfv
+rm -rfv extensions 
 popd

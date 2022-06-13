@@ -1,22 +1,14 @@
 # Rust parameters lambda extension
 
-# Installing
+...
 
-```sh
-# Install Rust
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+## Development Environment
 
-# Or update rust to the latest version
-# rustup update
+Using Codespaces or VS Code Remote Containers...
 
-# Add target so we can cross compile for x86 Lambdas
-rustup target add x86_64-unknown-linux-musl
+* https://github.com/microsoft/vscode-remote-try-rust
+* https://github.com/microsoft/vscode-dev-containers/tree/main/containers/rust/history
 
-# Install dependencies
-sudo apt-get update
-sudo apt-get upgrade
-sudo apt-get install zip musl-tools -y
-```
 
 # Building
 
