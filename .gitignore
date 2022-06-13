@@ -1,0 +1,5 @@
+/target
+outputs.json
+cdk/.env.local
+node_modules
+/bin
