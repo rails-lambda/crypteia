@@ -3,7 +3,7 @@ use axum::{
     Server,
 };
 use lambda_extension::{extension_fn, Error, LambdaEvent, NextEvent};
-use rust_parameters_lambda_extension::{fetch_parameters, Parameter};
+use crypteia::{fetch_parameters, Parameter};
 use serde_json::json;
 use std::{
     collections::HashMap,
@@ -20,10 +20,10 @@ type Db = Arc<Mutex<Vec<Parameter>>>;
 async fn parameters_extension(event: LambdaEvent) -> Result<(), Error> {
     match event.next {
         NextEvent::Shutdown(_e) => {
-            println!("[parameters] Shutdown");
+            println!("[crypteia] Shutdown");
         }
         NextEvent::Invoke(_e) => {
-            println!("[parameters] Invoke event");
+            println!("[crypteia] Invoke event");
         }
     }
     Ok(())
@@ -36,7 +36,7 @@ async fn index_handler(Extension(db): Extension<Db>) -> impl IntoResponse {
 
 #[tokio::main]
 async fn main() -> Result<(), Error> {
-    println!("[parameters] init");
+    println!("[crypteia] init");
 
     let vars: HashMap<String, String> = std::env::vars().collect();
 
@@ -45,7 +45,7 @@ async fn main() -> Result<(), Error> {
 
     let parameters = fetch_parameters(vars, &ssm).await.unwrap();
 
-    println!("[parameters] fetched: {}", json!(&parameters).to_string());
+    println!("[crypteia] fetched: {}", json!(&parameters).to_string());
 
     let db = Db::new(Mutex::new(parameters));
     let db_clone = db.clone();
@@ -63,13 +63,13 @@ async fn main() -> Result<(), Error> {
                 let mut current_parameters = db_clone.lock().unwrap();
 
                 if new_parameters != *current_parameters {
-                    println!("[parameters] Parameters changed!");
+                    println!("[crypteia] Parameters changed!");
                     *current_parameters = new_parameters;
                 } else {
-                    println!("[parameters] Have not changed")
+                    println!("[crypteia] Have not changed")
                 }
             } else {
-                println!("[parameters] Failed to refresh parameters")
+                println!("[crypteia] Failed to refresh parameters")
             }
         }
     });
@@ -82,7 +82,7 @@ async fn main() -> Result<(), Error> {
                 .into_inner(),
         );
         let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
-        println!("[parameters] listening on: {}", addr);
+        println!("[crypteia] listening on: {}", addr);
         Server::bind(&addr).serve(app.into_make_service()).await
     });
 

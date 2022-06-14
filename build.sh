@@ -1,16 +1,14 @@
 #!/bin/bash
 set -e
 
-rm -rfv bin/extensions.zip bin/extensions
-mkdir -p bin/extensions
+rm -rfv bin/crypteia bin/crypteia.zip 
 
-cargo build -p rust-parameters-lambda-extension --bin parameters-lambda-extension --release --target x86_64-unknown-linux-musl
+cargo build -p crypteia --bin crypteia --release --target x86_64-unknown-linux-musl
 
-cp target/x86_64-unknown-linux-musl/release/parameters-lambda-extension bin/extensions/parameters-lambda-extension
-strip bin/extensions/parameters-lambda-extension
-chmod +x bin/extensions/parameters-lambda-extension
+cp target/x86_64-unknown-linux-musl/release/crypteia bin/crypteia
+strip bin/crypteia
+chmod +x bin/crypteia
 
 pushd bin
-zip -r extensions.zip .
-rm -rfv extensions 
+zip -r crypteia.zip crypteia
 popd

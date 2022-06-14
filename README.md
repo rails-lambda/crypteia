@@ -25,8 +25,6 @@ Using Codespaces or VS Code Remote Containers...
 | SSM Parameter Store | ssm_parameter   | ssm:GetParameter              | FOO_PARAM="ssm_parameter:/my/parameter"      | Retrieve a single parameter                     |
 | SSM Parameter Store | ssm_parameters  | ssm:GetParametersByPath       | FOO_PARAMS="ssm_parameters:/my/path/prefix"  | Retrieve multiple parameters from a path prefix |
 | Secrets Manager     | secret          | secretsmanager:GetSecretValue | FOO_SECRET="secret:my-secret"                | Retrieve a single secret                        |
-| DynamoDB            | ddb_item        | dynamodb:GetItem              | FOO_ITEM="ddb_item:table=my-table&pk=A&sk=B" | Retrieve an item from a DynamoDB table          |
-| DynamoDB            | ddb_query       | dynamodb:Query                | FOO_QUERY="ddb_query:table=my-table&pk=A"    | Retrieve multiple items from a DynamoDB table   |
 ```
 
 ```json
