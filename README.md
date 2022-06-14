@@ -17,14 +17,6 @@ Using Codespaces or VS Code Remote Containers...
 ./build.sh
 ```
 
-# Deploying
-
-```sh
-cd cdk
-cdk bootstrap
-cdk deploy
-```
-
 # Parameter configuration
 
 ```
