@@ -1,14 +1,15 @@
 # Rust parameters lambda extension
 
-...
+BIG CALL OUT
+
+https://github.com/jakejscott/rust-parameters-lambda-extension/issues/1
 
 ## Development Environment
 
 Using Codespaces or VS Code Remote Containers...
 
-* https://github.com/microsoft/vscode-remote-try-rust
-* https://github.com/microsoft/vscode-dev-containers/tree/main/containers/rust/history
-
+- https://github.com/microsoft/vscode-remote-try-rust
+- https://github.com/microsoft/vscode-dev-containers/tree/main/containers/rust/history
 
 # Building
 
