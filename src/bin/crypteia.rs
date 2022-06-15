@@ -2,8 +2,8 @@ use axum::{
     extract::Extension, http::StatusCode, response::IntoResponse, routing::get, Json, Router,
     Server,
 };
-use lambda_extension::{extension_fn, Error, LambdaEvent, NextEvent};
 use crypteia::{fetch_parameters, Parameter};
+use lambda_extension::{extension_fn, Error, LambdaEvent, NextEvent};
 use serde_json::json;
 use std::{
     collections::HashMap,
