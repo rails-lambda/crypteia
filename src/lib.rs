@@ -43,7 +43,7 @@ pub async fn ssm_get_parameter(
         Err(error) => {
             eprintln!(
                 "[parameters] Error calling ssm:GetParameter. Environment variable: {name} Args: {args} Error: {err}",
-                err = error.to_string()
+                err = error
             );
         }
     }
@@ -51,7 +51,7 @@ pub async fn ssm_get_parameter(
     Ok(Parameter {
         name: name.to_owned(),
         args: args.to_owned(),
-        items: items,
+        items,
     })
 }
 
@@ -94,7 +94,7 @@ pub async fn ssm_get_parameters_by_path(
             Err(error) => {
                 eprintln!(
                     "[parameters] Error calling ssm:GetParametersByPath. Environment variable: {name} Args: {args} Error: {err}",
-                    err = error.to_string()
+                    err = error
                 );
                 break;
             }
@@ -104,7 +104,7 @@ pub async fn ssm_get_parameters_by_path(
     Ok(Parameter {
         name: name.to_owned(),
         args: args.to_owned(),
-        items: items,
+        items,
     })
 }
 
@@ -140,10 +140,10 @@ pub async fn fetch_parameters(
                 }
                 Err(error) => eprintln!(
                     "[parameters] Parameter error {err}",
-                    err = error.to_string()
+                    err = error
                 ),
             },
-            Err(error) => eprintln!("[parameters] JoinError {err}", err = error.to_string()),
+            Err(error) => eprintln!("[parameters] JoinError {err}", err = error),
         }
     }
 

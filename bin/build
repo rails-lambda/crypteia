@@ -1,0 +1,20 @@
+#!/bin/sh
+set -e
+
+rm -rf ./build
+mkdir ./build
+
+cargo build \
+  --release \
+  --bin crypteia \
+  --package crypteia \
+  --target x86_64-unknown-linux-musl
+
+cp ./target/x86_64-unknown-linux-musl/release/crypteia \
+  ./build
+
+cd ./build
+strip crypteia
+chmod +x crypteia
+zip -r crypteia.zip crypteia
+cd ..
