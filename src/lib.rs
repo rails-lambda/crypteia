@@ -42,7 +42,7 @@ pub async fn ssm_get_parameter(
         }
         Err(error) => {
             eprintln!(
-                "[parameters] Error calling ssm:GetParameter. Environment variable: {name} Args: {args} Error: {err}",
+                "[crypteia] Error calling ssm:GetParameter. Environment variable: {name} Args: {args} Error: {err}",
                 err = error
             );
         }
@@ -76,7 +76,7 @@ pub async fn ssm_get_parameters_by_path(
 
         match response {
             Ok(response) => {
-                for parameters in response.parameters {
+                if let Some(parameters) = response.parameters {
                     for parameter in parameters {
                         items.push(ParameterItem {
                             name: parameter.name.expect("name is required"),
@@ -93,7 +93,7 @@ pub async fn ssm_get_parameters_by_path(
             }
             Err(error) => {
                 eprintln!(
-                    "[parameters] Error calling ssm:GetParametersByPath. Environment variable: {name} Args: {args} Error: {err}",
+                    "[crypteia] Error calling ssm:GetParametersByPath. Environment variable: {name} Args: {args} Error: {err}",
                     err = error
                 );
                 break;
@@ -138,12 +138,9 @@ pub async fn fetch_parameters(
                 Ok(parameter) => {
                     results.push(parameter);
                 }
-                Err(error) => eprintln!(
-                    "[parameters] Parameter error {err}",
-                    err = error
-                ),
+                Err(error) => eprintln!("[crypteia] Parameter error {err}", err = error),
             },
-            Err(error) => eprintln!("[parameters] JoinError {err}", err = error),
+            Err(error) => eprintln!("[crypteia] JoinError {err}", err = error),
         }
     }
 

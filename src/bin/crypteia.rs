@@ -45,7 +45,7 @@ async fn main() -> Result<(), Error> {
 
     let parameters = fetch_parameters(vars, &ssm).await.unwrap();
 
-    println!("[crypteia] fetched: {}", json!(&parameters).to_string());
+    println!("[crypteia] fetched: {}", json!(&parameters));
 
     let db = Db::new(Mutex::new(parameters));
     let db_clone = db.clone();
