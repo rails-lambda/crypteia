@@ -4,6 +4,10 @@ BIG CALL OUT
 
 https://github.com/jakejscott/rust-parameters-lambda-extension/issues/1
 
+To-Do List:
+
+* Ensure lambda lifecycle events correct. Witnessed shutdown errors. Maybe we need some invoke hook to make sure SSM finished work?
+
 ## Development Environment
 
 Using Codespaces or VS Code Remote Containers...
