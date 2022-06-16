@@ -1,3 +1,6 @@
+
+[![Actions Status](https://github.com/customink/crypteia/actions/workflows/test.yml/badge.svg)](https://github.com/customink/crypteia/actions/workflows/test.yml)
+
 # Rust parameters lambda extension
 
 BIG CALL OUT
