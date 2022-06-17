@@ -11,6 +11,8 @@ To-Do List:
 - Huge thanks to this guy! https://github.com/jakejscott/rust-parameters-lambda-extension/issues/1
 - Ensure lambda lifecycle events correct. Witnessed shutdown errors. Maybe we need some invoke hook to make sure SSM finished work?
 - Make sure dev containers work locally with VS Code Remote Development. Add docs below.
+- Set raw environment variables.
+- Maybe rename to something like cold environments?
 
 ## Development Environment
 
