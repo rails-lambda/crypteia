@@ -4,4 +4,4 @@ set -e
 export HELLO=YALL
 export LD_PRELOAD=/workspaces/crypteia/libcrypteia/target/debug/libcrypteia.so
 
-zsh
+irb
