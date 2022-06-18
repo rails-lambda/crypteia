@@ -2,6 +2,6 @@
 set -e
 
 export HELLO=YALL
-export LD_PRELOAD=./target/debug/libcrypteia.so
+export LD_PRELOAD=/workspaces/crypteia/libcrypteia/build/libcrypteia.so
 
 ruby -e "puts(ENV['HELLO'])"
