@@ -1,0 +1,4 @@
+#!/bin/sh
+set -e
+
+LD_PRELOAD=./target/debug/libcrypteialdpreload.dylib irb
