@@ -8,9 +8,7 @@ async fn parameters_extension(event: LambdaEvent) -> Result<(), Error> {
         NextEvent::Shutdown(_e) => {
             println!("[crypteia] Shutdown");
         }
-        NextEvent::Invoke(_e) => {
-            // TODO... Need to wait using event/context data for SSM requests.
-        }
+        NextEvent::Invoke(_e) => {}
     }
     Ok(())
 }

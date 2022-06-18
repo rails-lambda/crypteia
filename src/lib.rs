@@ -160,7 +160,7 @@ mod test {
         let ssm = aws_sdk_ssm::Client::new(&config);
 
         ssm.put_parameter()
-            .name("/my/parameter".to_owned())
+            .name("/crypteia/parameter".to_owned())
             .value("my-parameter".to_owned())
             .r#type(ParameterType::SecureString)
             .overwrite(true)
@@ -168,7 +168,7 @@ mod test {
             .await?;
 
         ssm.put_parameter()
-            .name("/my/path/prefix/value/1".to_owned())
+            .name("/crypteia/path/prefix/value/1".to_owned())
             .value("value-1".to_owned())
             .r#type(ParameterType::SecureString)
             .overwrite(true)
@@ -176,7 +176,7 @@ mod test {
             .await?;
 
         ssm.put_parameter()
-            .name("/my/path/prefix/value/2".to_owned())
+            .name("/crypteia/path/prefix/value/2".to_owned())
             .value("value-2".to_owned())
             .r#type(ParameterType::SecureString)
             .overwrite(true)
@@ -186,11 +186,11 @@ mod test {
         let vars: HashMap<String, String> = HashMap::from([
             (
                 "FOO_PARAM".to_string(),
-                "ssm_parameter:/my/parameterx".to_string(),
+                "ssm_parameter:/crypteia/parameterx".to_string(),
             ),
             (
                 "FOO_PARAMS".to_string(),
-                "ssm_parameters:/my/path/prefixx".to_string(),
+                "ssm_parameters:/crypteia/path/prefixx".to_string(),
             ),
         ]);
 
