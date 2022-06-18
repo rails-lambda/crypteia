@@ -1,4 +1,7 @@
 #!/bin/sh
 set -e
 
-LD_PRELOAD=./target/debug/libcrypteialdpreload.dylib irb
+export HELLO=YALL
+export LD_PRELOAD=/workspaces/crypteia/libcrypteia/target/debug/libcrypteia.so
+
+zsh
