@@ -9,4 +9,4 @@ libc = "0.2.126"
 
 [lib]
 name = "crypteia"
-crate_type = ["dylib"]
+crate_type = ["cdylib"]

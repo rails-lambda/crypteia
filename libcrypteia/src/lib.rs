@@ -5,6 +5,7 @@ use std::ffi::CString;
 
 redhook::hook! {
     unsafe fn getenv(name: *const libc::c_char) -> *mut libc::c_char => dangerously_mutate_getenv {
+      println!("Hello libcrypteia!");
       let given_pointer = redhook::real!(getenv)(name);
       if given_pointer.is_null() {
           return given_pointer;
