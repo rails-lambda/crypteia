@@ -5,7 +5,8 @@
   },
   "features": {
     "aws-cli": "latest",
-    "ruby": "latest"
+    "ruby": "latest",
+    "docker-in-docker": "latest"
   },
   "runArgs": ["--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined"],
   "customizations": {
