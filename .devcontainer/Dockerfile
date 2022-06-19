@@ -1,5 +1,4 @@
-# rustup 1.24.3 rustc 1.60.0
-FROM mcr.microsoft.com/vscode/devcontainers/rust:0.202.0-1
+FROM mcr.microsoft.com/vscode/devcontainers/rust
 
 RUN sudo apt-get update -y && \
     sudo apt-get upgrade -y && \
