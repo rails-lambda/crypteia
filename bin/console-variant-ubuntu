@@ -1,0 +1,11 @@
+#!/bin/sh
+set -e
+
+docker run \
+  --interactive \
+  --tty \
+  --rm \
+  --privileged \
+  --entrypoint "/bin/bash" \
+  --volume "${PWD}:/home/crypteia:delegated" \
+  "ubuntu"

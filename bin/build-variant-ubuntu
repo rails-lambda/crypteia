@@ -1,0 +1,7 @@
+#!/bin/sh
+set -e
+
+docker build \
+  --file "variants/Dockerfile-ubuntu" \
+  --tag "ubuntu" \
+  "variants"
