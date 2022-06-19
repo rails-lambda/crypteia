@@ -1,8 +1,0 @@
-FROM ubuntu:focal
-
-RUN apt update && \
-    apt install -y build-essential curl zip && \
-    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-
-USER root
-WORKDIR /home/crypteia
