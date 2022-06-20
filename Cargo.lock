@@ -438,6 +438,8 @@ dependencies = [
  "futures",
  "lambda_extension",
  "lambda_runtime",
+ "libc",
+ "redhook",
  "serde",
  "serde_json",
  "tokio",
@@ -1056,6 +1058,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d34f1408f55294453790c48b2f1ebbb1c5b4b7563eb1f418bcfcfdbb06ebb4e7"
 dependencies = [
  "getrandom",
+]
+
+[[package]]
+name = "redhook"
+version = "2.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b6e109b8469dbbe6d7cbe18e5ebd65d4a134e2f4b91304ad9213984cad1d70a6"
+dependencies = [
+ "libc",
 ]
 
 [[package]]

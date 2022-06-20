@@ -2,3 +2,7 @@
 set -e
 
 cargo test
+
+./bin/build
+
+./test/libcrypteia.sh 
