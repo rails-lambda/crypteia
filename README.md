@@ -113,4 +113,10 @@ Please use AWS' [Restricting access to Systems Manager parameters using IAM poli
 - https://github.com/microsoft/vscode-remote-try-rust
 - https://github.com/microsoft/vscode-dev-containers/tree/main/containers/rust/history
 
-🚧 🚧 🚧 TODO: Speak to commands and running tests.
+#### Running Tests
+
+Require an AWS account to populate test SSM Parameters. The AWS CLI is installed on the devcontainer. Set it up with your test credentials using:
+
+```shell
+$ aws configure
+```

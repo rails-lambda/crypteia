@@ -3,4 +3,10 @@ set -e
 
 export LD_PRELOAD="${LD_PRELOAD:=/workspaces/crypteia/target/release/libcrypteia.so}"
 
-ruby -e "puts(ENV['EMPTY'])"
+if [ $1 = "ruby" ]; then
+  ruby -e "puts(ENV['EMPTY'])"
+fi
+
+if [ $1 = "node" ]; then
+  node --print "process.env.EMPTY"
+fi

@@ -6,3 +6,5 @@ RUN sudo apt-get update -y && \
 
 RUN rustup update && \
     rustup target add x86_64-unknown-linux-musl
+
+RUN sudo apt-get install -y nodejs
