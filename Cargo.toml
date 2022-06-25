@@ -15,12 +15,9 @@ crate_type = ["cdylib"]
 anyhow = "1.0.57"
 tokio = { version = "1.19.2", features = ["full"] }
 futures = { version = "0.3.21" }
-serde = { version = "1.0.137", features = ["derive"] }
-serde_json = "1.0.81"
-aws-config = "0.13.0"
-aws-sdk-ssm = "0.13.0"
-lambda_runtime = "0.5.1"
-lambda_extension = { git = "https://github.com/awslabs/aws-lambda-rust-runtime" }
+aws-config = "0.14.0"
+aws-sdk-ssm = "0.14.0"
+lambda-extension = "0.5.0"
 # lib
 redhook = "2.0"
 libc = "0.2.126"

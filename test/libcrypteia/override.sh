@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-export EXISTING=existingvalue
+export SECRET=x-crypteia-ssm:/crypteia/v5/myapp/SECRET
 export LD_PRELOAD="${LD_PRELOAD:=/workspaces/crypteia/target/release/libcrypteia.so}"
 
-ruby -e "puts(ENV['EXISTING'])"
+ruby -e "puts(ENV['SECRET'])"
