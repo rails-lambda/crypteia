@@ -3,10 +3,15 @@ on:
   push:
     tags:
       - "v*"
-
 jobs:
   build:
+    name: Create Release
     runs-on: ubuntu-latest
     steps:
+      - name: Get version from tag
+        id: tag_name
+        run: |
+          echo ::set-output name=current_version::${GITHUB_REF#refs/tags/v}
+        shell: bash
       - name: Checkout
         uses: actions/checkout@v2
