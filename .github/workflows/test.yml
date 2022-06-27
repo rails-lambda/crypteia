@@ -31,3 +31,16 @@ jobs:
           runCmd: |
             ./bin/setup
             ./bin/test
+      - name: Build & Run Development Container (w/Amazon Linux)
+        uses: devcontainers/ci@v0.2
+        with:
+          env: |
+            AWS_ACCESS_KEY_ID
+            AWS_SECRET_ACCESS_KEY
+            AWS_SESSION_TOKEN
+            AWS_DEFAULT_REGION
+            AWS_REGION
+          imageName: ghcr.io/customink/crypteia
+          runCmd: |
+            ./amzn/setup
+            ./amzn/test

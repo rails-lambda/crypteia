@@ -2,6 +2,6 @@
 set -e
 
 export HELLO=YALL
-export LD_PRELOAD=/workspaces/crypteia/libcrypteia/build/libcrypteia.so
+export LD_PRELOAD=$PWD/libcrypteia/build/libcrypteia-debian.so
 
 irb

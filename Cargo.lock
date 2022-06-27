@@ -410,8 +410,10 @@ dependencies = [
  "aws-sdk-ssm",
  "futures",
  "lambda-extension",
+ "lazy_static",
  "libc",
  "redhook",
+ "serde_json",
  "tokio",
 ]
 

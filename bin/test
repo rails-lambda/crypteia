@@ -1,7 +1,8 @@
 #!/bin/sh
 set -e
 
-cargo test
+if [ ! "${SKIP_CARGO_TEST}" = "1" ]; then
+  cargo test
+fi
 
-./bin/build
 ./test/libcrypteia.sh 

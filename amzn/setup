@@ -1,0 +1,16 @@
+#!/bin/sh
+set -e
+
+echo "== [amzn/Dockerfile] building... =="
+docker build --tag crypteia-lambda-nodejs --file amzn/Dockerfile .
+
+echo "== [amzn/Dockerfile] bin/setup =="
+docker run \
+  --rm \
+  --user root \
+  --entrypoint "./bin/setup" \
+  --volume "${PWD}:/var/task" \
+  crypteia-lambda-nodejs
+
+echo "== [amzn/Dockerfile-test] building... =="
+docker build --tag crypteia-lambda-nodejs-test --file amzn/Dockerfile-test .
