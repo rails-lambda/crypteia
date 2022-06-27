@@ -1,0 +1,13 @@
+FROM public.ecr.aws/lambda/nodejs:16
+
+COPY build/crypteia-amzn /opt/extensions/crypteia
+COPY build/libcrypteia-amzn.so /opt/lib/libcrypteia.so
+
+ENV BUILD_ARCH=amzn
+ENV SKIP_CARGO_TEST=1
+
+ENV EXISTING=existingvalue
+ENV LD_PRELOAD=/opt/lib/libcrypteia.so
+
+# For assert.sh support
+RUN yum install -y util-linux

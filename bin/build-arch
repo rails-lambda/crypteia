@@ -1,0 +1,24 @@
+#!/bin/sh
+set -e
+
+BIN="crypteia-${BUILD_ARCH}"
+LIB="libcrypteia-${BUILD_ARCH}.so"
+
+rm -rf "./build/${BIN}"
+rm -rf "./build/${BIN}.zip"
+rm -rf "./build/{$LIB}"
+rm -rf "./build/libcrypteia-${BUILD_ARCH}.zip"
+
+cargo build \
+  --release \
+  --target x86_64-unknown-linux-gnu
+
+cp ./target/x86_64-unknown-linux-gnu/release/crypteia "./build/${BIN}"
+cp ./target/x86_64-unknown-linux-gnu/release/libcrypteia.so "./build/${LIB}"
+
+cd ./build
+strip "$BIN"
+chmod +x "$BIN"
+zip -r "${BIN}.zip" "$BIN"
+zip -r "libcrypteia-${BUILD_ARCH}.zip" "$LIB"
+cd ..

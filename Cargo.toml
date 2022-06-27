@@ -21,6 +21,9 @@ lambda-extension = "0.5.0"
 # lib
 redhook = "2.0"
 libc = "0.2.126"
+lazy_static = "1.4.0"
+# both
+serde_json = "1.0.81"
 
 [profile.release]
 strip = true
