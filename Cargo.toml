@@ -1,6 +1,6 @@
 [package]
 name = "crypteia"
-version = "1.0.0"
+version = "0.90.0"
 edition = "2021"
 
 [[bin]]
