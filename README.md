@@ -1,5 +1,3 @@
-**🚧 🚧 🚧 - U N D E R &nbsp; C O N S T R U C T I O N - 🚧 🚧 🚧**
-
 [![Actions Status](https://github.com/customink/crypteia/actions/workflows/test.yml/badge.svg)](https://github.com/customink/crypteia/actions/workflows/test.yml)
 
 # 🛡 Crypteia
@@ -24,7 +22,7 @@ process.env.SECRET; // 1A2B3C4D5E6F
 ENV['SECRET'] # 1A2B3C4D5E6F
 ```
 
-We do this using our lib via `LD_PRELOAD` with [redhook](https://github.com/geofft/redhook) in coordination with our [Lambda Extension](https://docs.aws.amazon.com/lambda/latest/dg/runtimes-extensions-api.html) binary. See installation & usage sections for more details.
+We do this using our lib via `LD_LIBRARY_PATH` or `LD_PRELOAD` with [redhook](https://github.com/geofft/redhook) in coordination with our [Lambda Extension](https://docs.aws.amazon.com/lambda/latest/dg/runtimes-extensions-api.html) binary. See installation & usage sections for more details.
 
 💕 Many thanks to the following projects & people for their work, code, and personal help that made Crypteia possible:
 
@@ -33,7 +31,30 @@ We do this using our lib via `LD_PRELOAD` with [redhook](https://github.com/geof
 
 ## Installation
 
-🚧 🚧 🚧 TODO: Installation instructions for both `crypteia` binary extensions and `libcrypteia.so` file via `LD_PRELOAD`...
+When building your own Lambda Containers, download both the `crypteia` binary and `libcrypteia.so` shared object files that matche your platform from our [Releases](https://github.com/customink/crypteia/releases) page. Target platforms include the following naming convention.
+
+- Amazon Linux 2: `crypteia-amzn.zip` & `libcrypteia-amzn.zip`
+- Debian, Ubuntu, Etc: `crypteia-debian.zip` & `libcrypteia-debian.zip`
+
+⚠️ For now these are `x86_64` arch but we plan to release `arm64` variants soon. Follow or contribute in our [GitHub Issue](https://github.com/customink/crypteia/issues/5) tracking this for updates.
+
+Once these files are downloaded, they can be incorporated into your `Dockerfile` file like so:
+
+```dockerfile
+RUN mkdir -p /opt/lib
+RUN mkdir -p /opt/extensions
+COPY crypteia /opt/extensions/crypteia
+COPY libcrypteia.so /opt/lib/libcrypteia.so
+ENV LD_PRELOAD=/opt/lib/libcrypteia.so
+```
+
+#### Lambda Layer
+
+- In progress...
+- Link
+  https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-layerversion.html
+- AWS::Lambda::LayerVersion
+- Any `CompatibleRuntimes`
 
 ## Usage
 

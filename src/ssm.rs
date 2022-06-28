@@ -30,9 +30,9 @@ pub async fn get_envs(env_vars: HashMap<String, String>) -> Result<HashMap<Strin
                         results.insert(key, value);
                     });
                 }
-                Err(error) => eprintln!("[crypteia] Parameter error {err}", err = error),
+                Err(error) => eprintln!("[crypteia] ssm: Parameter error {err}", err = error),
             },
-            Err(error) => eprintln!("[crypteia] JoinError {err}", err = error),
+            Err(error) => eprintln!("[crypteia] ssm: JoinError {err}", err = error),
         }
     }
     Ok(results)
@@ -58,7 +58,7 @@ async fn ssm_get_parameter(
         }
         Err(error) => {
             eprintln!(
-                "[crypteia] Error calling ssm:GetParameter. Environment variable: {name} Path: {path} Error: {err}",
+                "[crypteia] ssm: Error calling ssm:GetParameter. Environment variable: {name} Path: {path} Error: {err}",
                 err = error
             );
         }
@@ -101,7 +101,7 @@ async fn ssm_get_parameters_by_path(
             }
             Err(error) => {
                 eprintln!(
-                    "[crypteia] Error calling ssm:GetParametersByPath. Environment variable: {name} Path: {path} Error: {err}",
+                    "[crypteia] ssm: Error calling ssm:GetParametersByPath. Environment variable: {name} Path: {path} Error: {err}",
                     err = error
                 );
                 break;

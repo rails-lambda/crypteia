@@ -1,0 +1,26 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: Crypteia Lambda Layer https://github.com/customink/crypteia
+Resources:
+  CryptiaLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: crypteia
+      Description: Rust Lambda Extension for any Runtime to preload SSM Parameters as Secure Environment Variables!
+      ContentUri: layer/layer.zip
+      CompatibleArchitectures:
+        - x86_64
+      CompatibleRuntimes:
+        - nodejs16.x
+        - nodejs14.x
+        - nodejs12.x
+        - python3.9
+        - python3.8
+        - python3.7
+        - java11
+        - java8.al2
+        - ruby2.7
+        - dotnet6
+        - dotnetcore3.1
+        - provided.al2
+      RetentionPolicy: Delete

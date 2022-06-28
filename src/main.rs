@@ -8,10 +8,10 @@ const ENV_FILE: &str = "/tmp/crypteia.json";
 
 #[tokio::main]
 async fn main() -> Result<(), Error> {
-    println!("[crypteia] Init");
+    println!("[crypteia] main: Init");
     let env_vars: HashMap<String, String> = std::env::vars().collect();
     let env_map = ssm::get_envs(env_vars).await.unwrap();
-    println!("[crypteia] Fetched environment variables");
+    println!("[crypteia] main: Fetched environment variables");
     write_envs_to_tmp_json(env_map);
     let func = service_fn(parameters_extension);
     lambda_extension::run(func).await
@@ -20,7 +20,7 @@ async fn main() -> Result<(), Error> {
 async fn parameters_extension(event: LambdaEvent) -> Result<(), Error> {
     match event.next {
         NextEvent::Shutdown(_e) => {
-            println!("[crypteia] Shutdown");
+            println!("[crypteia] main: Shutdown");
         }
         NextEvent::Invoke(_e) => {}
     }
