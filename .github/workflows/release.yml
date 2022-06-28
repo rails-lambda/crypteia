@@ -30,7 +30,7 @@ jobs:
             ./amzn/setup
       - name: Get CHANGELOG Entry
         id: changelog_reader
-        uses: mindsers/changelog-reader-action@v2
+        uses: mindsers/changelog-reader-action@v2.0.0
         with:
           validation_level: warn
           version: ${{ steps.tag_name.outputs.current_version }}

@@ -108,15 +108,24 @@ Please use AWS' [Restricting access to Systems Manager parameters using IAM poli
 
 ## Development
 
-🚧 🚧 🚧 TODO: Talk more about Codespaces or VS Code Remote Containers...
+This project is built for [GitHub Codespcaes](https://github.com/features/codespaces) which may not be available to everyone. Thankfully you can use this same devcontainer.json specification automatically with [VS Code Remote Development](https://code.visualstudio.com/docs/remote/remote-overview) which allows you to clone this repo and [open the folder in a container](https://code.visualstudio.com/docs/remote/containers#_quick-start-open-an-existing-folder-in-a-container).
 
-- https://github.com/microsoft/vscode-remote-try-rust
-- https://github.com/microsoft/vscode-dev-containers/tree/main/containers/rust/history
+Our development container is based on the [vscode-remote-try-rust](https://github.com/microsoft/vscode-remote-try-rust) demo project. For details on the VS Code Rust development containers, have a look here: https://github.com/microsoft/vscode-dev-containers/tree/main/containers/rust/history. Once you have the repo cloned or setup in a development container, run the following command. This will install and build your project.
+
+```shell
+./bin/setup
+```
 
 #### Running Tests
 
-Require an AWS account to populate test SSM Parameters. The AWS CLI is installed on the devcontainer. Set it up with your test credentials using:
+Requires an AWS account to populate test SSM Parameters. The AWS CLI is installed on the devcontainer. Set it up with your **test credentials** using:
 
 ```shell
-$ aws configure
+aws configure
+```
+
+Once complete, you can run the tests using the following command. If you make changes to the code, make sure to run `bin/setup` again whick will run cargo build for you.
+
+```shell
+./bin/test
 ```
