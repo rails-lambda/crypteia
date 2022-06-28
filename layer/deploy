@@ -1,3 +1,28 @@
 #!/bin/sh
 set -e
 
+if [ -z "${S3_BUCKET_NAME}" ]; then
+  echo "S3_BUCKET_NAME is not set"
+  exit 1
+fi
+
+mkdir -p ./layer/opt/extensions
+mkdir -p ./layer/opt/lib
+
+cp ./build/crypteia-amzn ./layer/opt/extensions/crypteia
+cp ./build/libcrypteia-amzn.so ./layer/opt/lib/libcrypteia.so
+
+cd ./layer/opt
+zip -r layer.zip .
+mv layer.zip ..
+cd ..
+
+sam package \
+  --template-file "template.yml" \
+  --output-template-file "packaged.yaml" \
+  --s3-bucket "${S3_BUCKET_NAME}"
+
+sam deploy \
+  --template-file "packaged.yaml" \
+  --stack-name "crypteia-layer" \
+  --capabilities CAPABILITY_IAM

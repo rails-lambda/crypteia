@@ -1,5 +1,6 @@
 /build
 /target
-/libcrypteia/build
-/libcrypteia/target
+/layer/opt
+/layer/layer.zip
+/layer/packaged.yaml
 outputs.json

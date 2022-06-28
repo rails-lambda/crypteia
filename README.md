@@ -22,7 +22,7 @@ process.env.SECRET; // 1A2B3C4D5E6F
 ENV['SECRET'] # 1A2B3C4D5E6F
 ```
 
-We do this using our lib via `LD_LIBRARY_PATH` or `LD_PRELOAD` with [redhook](https://github.com/geofft/redhook) in coordination with our [Lambda Extension](https://docs.aws.amazon.com/lambda/latest/dg/runtimes-extensions-api.html) binary. See installation & usage sections for more details.
+We do this using our shared object library via the `LD_PRELOAD` environment variable in coordination with our [Lambda Extension](https://docs.aws.amazon.com/lambda/latest/dg/runtimes-extensions-api.html) binary file. See installation & usage sections for more details.
 
 💕 Many thanks to the following projects & people for their work, code, and personal help that made Crypteia possible:
 
@@ -31,12 +31,14 @@ We do this using our lib via `LD_LIBRARY_PATH` or `LD_PRELOAD` with [redhook](ht
 
 ## Installation
 
-When building your own Lambda Containers, download both the `crypteia` binary and `libcrypteia.so` shared object files that matche your platform from our [Releases](https://github.com/customink/crypteia/releases) page. Target platforms include the following naming convention.
+When building your own Lambda Containers, [download](https://github.com/customink/crypteia/releases) both the `crypteia` binary and `libcrypteia.so` shared object files that match your platform from our [Releases](https://github.com/customink/crypteia/releases) page. Target platforms include the following using these naming conventions.
 
 - Amazon Linux 2: `crypteia-amzn.zip` & `libcrypteia-amzn.zip`
 - Debian, Ubuntu, Etc: `crypteia-debian.zip` & `libcrypteia-debian.zip`
 
-⚠️ For now these are `x86_64` arch but we plan to release `arm64` variants soon. Follow or contribute in our [GitHub Issue](https://github.com/customink/crypteia/issues/5) tracking this for updates.
+⚠️ When building your own Lambda Containers, please make sure [glibc](https://www.gnu.org/software/libc/) is installed since this is used by [redhook](https://github.com/geofft/redhook).
+
+⚠️ For now our project supports the `x86_64` architecture, but we plan to release `arm64` variants soon. Follow or contribute in our [GitHub Issue](https://github.com/customink/crypteia/issues/5) which tracks this topic.
 
 Once these files are downloaded, they can be incorporated into your `Dockerfile` file like so:
 
@@ -50,11 +52,13 @@ ENV LD_PRELOAD=/opt/lib/libcrypteia.so
 
 #### Lambda Layer
 
-- In progress...
-- Link
-  https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-layerversion.html
-- AWS::Lambda::LayerVersion
-- Any `CompatibleRuntimes`
+Our Amazon Linux 2 files can be used within a [Lambda Layer](https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html) that you can deploy to your own AWS account. You can use this project to build, publish, and deploy that layer since it has the SAM CLI installed. All you need to do is supply your own S3 bucket. For example:
+
+```shell
+aws configure
+./amzn/setup
+S3_BUCKET_NAME=my-bucket ./layer/deploy
+```
 
 ## Usage
 
@@ -99,6 +103,14 @@ Here are a few details about the internal implementation on how Crypteia works:
 
 For security, the usage of `DB_URL: x-crypteia` placeholders ensures that your application's configuration is in full control on which dynamic values can be used with `x-crypteia-ssm-path:`.
 
+#### Lambda Layer
+
+Shown below is a simple Node.js 16 function which has the appropriate [IAM Permissions](#iam-permissions) and Crypteia Lambda Layer added. Also configured are the needed `LD_PRELOAD` and `SECRET` environment variables. The code of this function log the value of the `process.env.SECRET` which does correctly resolve to the value within SSM Parameter Store.
+
+![Screenshot of the Environment variables in the AWS Lambda Console showing `LD_PRELOAD` to `/opt/lib/libcrypteia.so` and `SECRET` to `x-crypteia-ssm:/myapp/SECRET`.](/images/readme-env-variables.png)
+
+![Screenshot of Code source in the AWS Lambda Console showing the `body` results of `1A2B3C4D5E6F` which is resolved from SSM Parameter Store.](/images/readme-code-results.png)
+
 #### IAM Permissions
 
 Please use AWS' [Restricting access to Systems Manager parameters using IAM policies](https://docs.aws.amazon.com/systems-manager/latest/userguide/sysman-paramstore-access.html) guide for details on what policies your function's IAM Role will need. For an appliction to pull both single parameters as well as bulk paths, I have found the following policy helpful. It assumed the `/myapp` prefix and using AWS default KMS encryption key.
@@ -120,7 +132,7 @@ Please use AWS' [Restricting access to Systems Manager parameters using IAM poli
     },
     {
       "Action": "kms:Decrypt",
-      "Resource": "arn:aws:kms:us-east-1:123456789012:key/4914ec06-e888-4ea5-a371-5b88eEXAMPLE",
+      "Resource": "*arn:aws:kms:us-east-1:123456789012:key/4914ec06-e888-4ea5-a371-5b88eEXAMPLE*",
       "Effect": "Allow"
     }
   ]
@@ -137,6 +149,12 @@ Our development container is based on the [vscode-remote-try-rust](https://githu
 ./bin/setup
 ```
 
+Optionally, you can setup/build the Amazon Linux 2 files. This will use Docker in Docker to download AWS SAM & Lambda images to build cryptia using what is present (like glibc) in those environments.
+
+```shell
+./amzn/setup
+```
+
 #### Running Tests
 
 Requires an AWS account to populate test SSM Parameters. The AWS CLI is installed on the devcontainer. Set it up with your **test credentials** using:
@@ -149,4 +167,10 @@ Once complete, you can run the tests using the following command. If you make ch
 
 ```shell
 ./bin/test
+```
+
+Again, if you are working on the Amazon Linux 2 project files, assuming you have already run `./amzn/setup`, you can run the same tests above using that environment.
+
+```shell
+./amzn/test
 ```
