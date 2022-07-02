@@ -27,7 +27,7 @@ jobs:
             AWS_SESSION_TOKEN
             AWS_DEFAULT_REGION
             AWS_REGION
-          imageName: ghcr.io/customink/crypteia
+          imageName: ghcr.io/customink/crypteia-devcontainer
           runCmd: |
             ./bin/setup
             ./bin/test
@@ -40,7 +40,7 @@ jobs:
             AWS_SESSION_TOKEN
             AWS_DEFAULT_REGION
             AWS_REGION
-          imageName: ghcr.io/customink/crypteia
+          imageName: ghcr.io/customink/crypteia-devcontainer
           runCmd: |
             ./amzn/setup
             ./amzn/test

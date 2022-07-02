@@ -1,0 +1,15 @@
+#!/bin/sh
+set -e
+
+if [ -z "${CRYPTEIA_VERSION}" ]; then
+  echo "CRYPTEIA_VERSION is not set"
+  exit 1
+fi
+
+TAG="ghcr.io/customink/crypteia-extension:${CRYPTEIA_VERSION}"
+
+echo "== [Lambda Extension Image] building... =="
+docker build --tag $TAG --file layer/Dockerfile .
+
+echo "== [Lambda Extension Image] push... =="
+docker push $TAG
