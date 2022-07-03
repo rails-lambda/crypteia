@@ -1,0 +1,25 @@
+#!/bin/sh
+set -e
+
+if [ -z "${CRYPTEIA_VERSION}" ]; then
+  echo "CRYPTEIA_VERSION is not set"
+  exit 1
+fi
+
+TAG=
+
+echo "== [Lambda Extension Images] building... =="
+
+docker build \
+  --tag "ghcr.io/customink/crypteia-extension-amzn:${CRYPTEIA_VERSION}" \
+  --file layer/Dockerfile-amzn .
+
+docker build \
+  --tag "ghcr.io/customink/crypteia-extension-debian:${CRYPTEIA_VERSION}" \
+  --file layer/Dockerfile-debian .
+
+echo "== [Lambda Extension Images] pushes... =="
+
+docker push "ghcr.io/customink/crypteia-extension-amzn:${CRYPTEIA_VERSION}"
+
+docker push "ghcr.io/customink/crypteia-extension-debian:${CRYPTEIA_VERSION}"

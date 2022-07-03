@@ -51,4 +51,4 @@ jobs:
           CRYPTEIA_VERSION: ${{ steps.changelog_reader.outputs.version }}
         run: |
           echo "${{ secrets.PUBLIC_GITHUB_TOKEN_PACKAGES }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-          ./layer/deploy-image
+          ./layer/deploy-images
