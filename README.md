@@ -31,16 +31,24 @@ We do this using our shared object library via the `LD_PRELOAD` environment vari
 
 ## Installation
 
-When building your own Lambda Containers, [download](https://github.com/customink/crypteia/releases) both the `crypteia` binary and `libcrypteia.so` shared object files that match your platform from our [Releases](https://github.com/customink/crypteia/releases) page. Target platforms include the following using these naming conventions.
+When building your own Lambda Containers, use both the `crypteia` binary and `libcrypteia.so` shared object files that match your platform. Target platform naming conventions include the following:
 
-- Amazon Linux 2: `crypteia-amzn.zip` & `libcrypteia-amzn.zip`
-- Debian, Ubuntu, Etc: `crypteia-debian.zip` & `libcrypteia-debian.zip`
-
-⚠️ When building your own Lambda Containers, please make sure [glibc](https://www.gnu.org/software/libc/) is installed since this is used by [redhook](https://github.com/geofft/redhook).
+- Amazon Linux 2: Uses the `-amzn` suffix.
+- Debian, Ubuntu, Etc: Uses the `-debian` suffix.
 
 ⚠️ For now our project supports the `x86_64` architecture, but we plan to release `arm64` variants soon. Follow or contribute in our [GitHub Issue](https://github.com/customink/crypteia/issues/5) which tracks this topic.
 
-Once these files are downloaded, they can be incorporated into your `Dockerfile` file like so:
+#### Lambda Containers
+
+You have two options here. The easiest is to use Docker's multi stage builds with our [Extension Containers](https://github.com/orgs/customink/packages?ecosystem=container&tab=packages&ecosystem=container&q=extension) to copy the `/opt` directory matching your platform and Crypteia version number. example below. Remember to use `-debian` vs `-amzn` if you are using your own Linux containers. Or change the version number depending on your needs.
+
+```dockerfile
+FROM ghcr.io/customink/crypteia-extension-amzn:0.90.0 AS crypteia
+FROM public.ecr.aws/lambda/nodejs:16
+COPY --from=crypteia /opt /opt
+```
+
+Alternatively, you can download your platform's binary and shared object file from our [Releases](https://github.com/customink/crypteia/releases) page and place them into your projects Docker build directory. Remember, to remove the platform file suffix. Example:
 
 ```dockerfile
 RUN mkdir -p /opt/lib
@@ -49,6 +57,8 @@ COPY crypteia /opt/extensions/crypteia
 COPY libcrypteia.so /opt/lib/libcrypteia.so
 ENV LD_PRELOAD=/opt/lib/libcrypteia.so
 ```
+
+⚠️ When building your own Lambda Containers, please make sure [glibc](https://www.gnu.org/software/libc/) is installed since this is used by [redhook](https://github.com/geofft/redhook).
 
 #### Lambda Layer
 
