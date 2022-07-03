@@ -40,7 +40,7 @@ When building your own Lambda Containers, use both the `crypteia` binary and `li
 
 #### Lambda Containers
 
-You have two options here. The easiest is to use Docker's multi stage builds with our [Extension Containers](https://github.com/orgs/customink/packages?ecosystem=container&tab=packages&ecosystem=container&q=extension) to copy the `/opt` directory matching your platform and Crypteia version number. example below. Remember to use `-debian` vs `-amzn` if you are using your own Linux containers. Or change the version number depending on your needs.
+You have two options here. The easiest is to use Docker's multi stage builds with our [Extension Containers]([https://github.com/orgs/customink/packages?ecosystem=container&tab=packages&ecosystem=container&q=extension](https://github.com/orgs/customink/packages?repo_name=crypteia&q=extension)) to copy the `/opt` directory matching your platform and Crypteia version number. example below. Remember to use `-debian` vs `-amzn` if you are using your own Linux containers. Or change the version number depending on your needs.
 
 ```dockerfile
 FROM ghcr.io/customink/crypteia-extension-amzn:0.90.0 AS crypteia
