@@ -60,9 +60,9 @@ ENV LD_PRELOAD=/opt/lib/libcrypteia.so
 
 ⚠️ When building your own Lambda Containers, please make sure [glibc](https://www.gnu.org/software/libc/) is installed since this is used by [redhook](https://github.com/geofft/redhook).
 
-#### Lambda Layer
+#### Lambda Extension
 
-Our Amazon Linux 2 files can be used within a [Lambda Layer](https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html) that you can deploy to your own AWS account. You can use this project to build, publish, and deploy that layer since it has the SAM CLI installed. All you need to do is supply your own S3 bucket. For example:
+Our Amazon Linux 2 files can be used within a [Lambda Extension](https://docs.aws.amazon.com/lambda/latest/dg/using-extensions.html) that you can deploy to your own AWS account as a [Lambda Layer](https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html). You can use this project to build, publish, and deploy that layer since it has the SAM CLI installed. All you need to do is supply your own S3 bucket. For example:
 
 ```shell
 aws configure
@@ -113,9 +113,7 @@ Here are a few details about the internal implementation on how Crypteia works:
 
 For security, the usage of `DB_URL: x-crypteia` placeholders ensures that your application's configuration is in full control on which dynamic values can be used with `x-crypteia-ssm-path:`.
 
-#### Lambda Layer
-
-Shown below is a simple Node.js 16 function which has the appropriate [IAM Permissions](#iam-permissions) and Crypteia Lambda Layer added. Also configured are the needed `LD_PRELOAD` and `SECRET` environment variables. The code of this function log the value of the `process.env.SECRET` which does correctly resolve to the value within SSM Parameter Store.
+Shown below is a simple Node.js 16 function which has the appropriate [IAM Permissions](#iam-permissions) and Crypteia extension via a Lambda Layer installed. Also configured are the needed `LD_PRELOAD` and `SECRET` environment variables. The code of this function log the value of the `process.env.SECRET` which does correctly resolve to the value within SSM Parameter Store.
 
 ![Screenshot of the Environment variables in the AWS Lambda Console showing `LD_PRELOAD` to `/opt/lib/libcrypteia.so` and `SECRET` to `x-crypteia-ssm:/myapp/SECRET`.](/images/readme-env-variables.png)
 
