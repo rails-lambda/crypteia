@@ -24,7 +24,7 @@ jobs:
       - name: Build & Run Development Container
         uses: devcontainers/ci@v0.2
         with:
-          imageName: ghcr.io/customink/crypteia
+          imageName: ghcr.io/customink/crypteia-devcontainer
           runCmd: |
             ./bin/setup
             ./amzn/setup
@@ -46,3 +46,9 @@ jobs:
           prerelease: ${{ steps.changelog_reader.outputs.status == 'prereleased' }}
           draft: ${{ steps.changelog_reader.outputs.status == 'unreleased' }}
           token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Push Lambda Extension Layer Image
+        env:
+          CRYPTEIA_VERSION: ${{ steps.changelog_reader.outputs.version }}
+        run: |
+          echo "${{ secrets.PUBLIC_GITHUB_TOKEN_PACKAGES }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+          ./layer/deploy-image
