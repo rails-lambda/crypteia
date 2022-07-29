@@ -4,7 +4,7 @@
 
 ## Rust Lambda Extension for any Runtime to preload SSM Parameters as Secure Environment Variables!
 
-Super fast and only performaned once during your function's initialization, Crypteia turns your serverless YAML from this:
+Super fast and only performed once during your function's initialization, Crypteia turns your serverless YAML from this:
 
 ```yaml
 Environment:
