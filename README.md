@@ -46,6 +46,7 @@ You have two options here. The easiest is to use Docker's multi stage builds wit
 FROM ghcr.io/customink/crypteia-extension-amzn:0.90.0 AS crypteia
 FROM public.ecr.aws/lambda/nodejs:16
 COPY --from=crypteia /opt /opt
+ENV LD_PRELOAD=/opt/lib/libcrypteia.so
 ```
 
 Alternatively, you can download your platform's binary and shared object file from our [Releases](https://github.com/customink/crypteia/releases) page and place them into your projects Docker build directory. Remember, to remove the platform file suffix. Example:
