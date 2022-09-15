@@ -61,6 +61,12 @@ COPY libcrypteia.so /opt/lib/libcrypteia.so
 ENV LD_PRELOAD=/opt/lib/libcrypteia.so
 ```
 
+TODO: Additional IMPORTANT callout if using Python to do something like this...
+
+```dockerfile
+ENV PYTHONPATH=${PYTHONPATH:/opt/crypteia/python}
+```
+
 ⚠️ When building your own Lambda Containers, please make sure [glibc](https://www.gnu.org/software/libc/) is installed since this is used by [redhook](https://github.com/geofft/redhook).
 
 #### Lambda Extension
