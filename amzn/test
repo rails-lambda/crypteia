@@ -5,20 +5,16 @@ echo "== [amzn/Dockerfile] bin/test =="
 docker run \
   --rm \
   --user root \
-  --entrypoint "./bin/test" \
+  --entrypoint "./test/libcrypteia.sh" \
   --volume "${PWD}:/var/task" \
-  --env AWS_ACCESS_KEY_ID \
-  --env AWS_SECRET_ACCESS_KEY \
-  --env AWS_SESSION_TOKEN \
-  --env AWS_DEFAULT_REGION \
-  --env AWS_REGION \
-  --volume "${HOME}/.aws:/root/.aws" \
+  --env TEST_LANG=node \
   crypteia-lambda-nodejs
 
 echo "== [amzn/Dockerfile-test] bin/test =="
 docker run \
   --rm \
   --user root \
-  --entrypoint "./bin/test" \
+  --entrypoint "./test/libcrypteia.sh" \
   --volume "${PWD}:/var/task" \
+  --env TEST_LANG=node \
   crypteia-lambda-nodejs-test

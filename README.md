@@ -2,6 +2,8 @@
 
 # 🛡 Crypteia
 
+![Node](https://shields.io/badge/x-Node.js-x?logo=node.js&style=plastic&color=339933&label=&labelColor=white) ![Ruby](https://shields.io/badge/x-Ruby-x?logo=ruby&style=plastic&color=CC342D&label=&labelColor=white&logoColor=CC342D) ![PHP](https://shields.io/badge/x-PHP-x?logo=php&style=plastic&color=777BB4&label=&labelColor=white)
+
 ## Rust Lambda Extension for any Runtime to preload SSM Parameters as Secure Environment Variables!
 
 Super fast and only performed once during your function's initialization, Crypteia turns your serverless YAML from this:
