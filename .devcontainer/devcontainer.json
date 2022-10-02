@@ -32,5 +32,6 @@
       ]
     }
   },
+  "postCreateCommand": "./.devcontainer/postCreate",
   "remoteUser": "vscode"
 }
