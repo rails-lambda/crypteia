@@ -8,3 +8,4 @@ fi
 TEST_LANG=node ./test/libcrypteia.sh 
 TEST_LANG=ruby ./test/libcrypteia.sh 
 TEST_LANG=php ./test/libcrypteia.sh 
+TEST_LANG=python ./test/libcrypteia.sh
