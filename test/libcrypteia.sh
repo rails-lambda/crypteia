@@ -6,6 +6,7 @@ export CRYPTEIA_ENV_FILE="/tmp/crypteia.json"
 export BUILD_ARCH="${BUILD_ARCH:=debian}"
 export TEST_LANG="${TEST_LANG:=node}"
 export LD_PRELOAD="${LD_PRELOAD:=$PWD/build/libcrypteia-${BUILD_ARCH}.so}"
+export PYTHONPATH="${PYTHONPATH:=$PWD/package/opt/crypteia/python}"
 
 echo "============================="
 echo "   TEST_LANG: ${TEST_LANG}"
