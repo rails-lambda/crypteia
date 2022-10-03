@@ -2,7 +2,7 @@
 
 # 🛡 Crypteia
 
-![Node](https://shields.io/badge/x-Node.js-x?logo=node.js&style=plastic&color=339933&label=&labelColor=white) ![Ruby](https://shields.io/badge/x-Ruby-x?logo=ruby&style=plastic&color=CC342D&label=&labelColor=white&logoColor=CC342D) ![PHP](https://shields.io/badge/x-PHP-x?logo=php&style=plastic&color=777BB4&label=&labelColor=white)
+![Node](https://shields.io/badge/x-Node.js-x?logo=node.js&style=plastic&color=339933&label=&labelColor=white) ![Ruby](https://shields.io/badge/x-Ruby-x?logo=ruby&style=plastic&color=CC342D&label=&labelColor=white&logoColor=CC342D) ![PHP](https://shields.io/badge/x-PHP-x?logo=php&style=plastic&color=777BB4&label=&labelColor=white) ![Python](https://shields.io/badge/x-Python-x?logo=python&style=plastic&color=3776AB&label=&labelColor=white)
 
 ## Rust Lambda Extension for any Runtime to preload SSM Parameters as Secure Environment Variables!
 
@@ -61,7 +61,7 @@ COPY libcrypteia.so /opt/lib/libcrypteia.so
 ENV LD_PRELOAD=/opt/lib/libcrypteia.so
 ```
 
-TODO: Additional IMPORTANT callout if using Python to do something like this...
+If you are using Python you will need to add our Crypteia python package to the PYTHONPATH in order for things to "just work". The result of this will be that `os.environ["SECRET"]`, `os.environ.get("SECRET")`, and `os.getenv("SECRET")` will be routed to the `getenv` system call and therefore take advantage of the Crypteia rust extension.
 
 ```dockerfile
 ENV PYTHONPATH=${PYTHONPATH:/opt/crypteia/python}
