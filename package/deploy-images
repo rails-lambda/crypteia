@@ -12,11 +12,11 @@ echo "== [Lambda Extension Images] building... =="
 
 docker build \
   --tag "ghcr.io/customink/crypteia-extension-amzn:${CRYPTEIA_VERSION}" \
-  --file layer/Dockerfile-amzn .
+  --file package/Dockerfile-amzn .
 
 docker build \
   --tag "ghcr.io/customink/crypteia-extension-debian:${CRYPTEIA_VERSION}" \
-  --file layer/Dockerfile-debian .
+  --file package/Dockerfile-debian .
 
 echo "== [Lambda Extension Images] pushes... =="
 

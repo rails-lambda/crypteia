@@ -6,15 +6,15 @@ if [ -z "${S3_BUCKET_NAME}" ]; then
   exit 1
 fi
 
-mkdir -p ./layer/opt/extensions
-mkdir -p ./layer/opt/lib
+mkdir -p ./package/opt/extensions
+mkdir -p ./package/opt/lib
 
-cp ./build/crypteia-amzn ./layer/opt/extensions/crypteia
-cp ./build/libcrypteia-amzn.so ./layer/opt/lib/libcrypteia.so
+cp ./build/crypteia-amzn ./package/opt/extensions/crypteia
+cp ./build/libcrypteia-amzn.so ./package/opt/lib/libcrypteia.so
 
-cd ./layer/opt
-zip -r layer.zip .
-mv layer.zip ..
+cd ./package/opt
+zip -r package.zip .
+mv package.zip ..
 cd ..
 
 sam package \

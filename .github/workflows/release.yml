@@ -46,8 +46,7 @@ jobs:
           prerelease: ${{ steps.changelog_reader.outputs.status == 'prereleased' }}
           draft: ${{ steps.changelog_reader.outputs.status == 'unreleased' }}
           token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Push Lambda Extension Layer Image
-        env:
-          CRYPTEIA_VERSION: ${{ steps.changelog_reader.outputs.version }}
+      - name: Push Container Package(s)
         run: |
-          ./layer/deploy-images
+          CRYPTEIA_VERSION=${{ steps.changelog_reader.outputs.version }} ./package/deploy-images
+          CRYPTEIA_VERSION=latest ./package/deploy-images

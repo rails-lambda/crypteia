@@ -7,7 +7,7 @@ Resources:
     Properties:
       LayerName: crypteia
       Description: Rust Lambda Extension for any Runtime to preload SSM Parameters as Secure Environment Variables!
-      ContentUri: layer.zip
+      ContentUri: package.zip
       CompatibleArchitectures:
         - x86_64
       CompatibleRuntimes:

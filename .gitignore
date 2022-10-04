@@ -1,6 +1,6 @@
 /build
 /target
-/layer/opt
-/layer/layer.zip
-/layer/packaged.yaml
+/package/opt
+/package/package.zip
+/package/packaged.yaml
 outputs.json
