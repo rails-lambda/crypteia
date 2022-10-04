@@ -1,4 +1,5 @@
 extern crate libc;
+mod log;
 use lazy_static::lazy_static;
 use libc::c_char;
 use std::collections::HashMap;
@@ -27,7 +28,7 @@ redhook::hook! {
                 }
             }
             if DEBUG {
-                println!("[crypteia] libcrypteia: initialized using LD_PRELOAD");
+                log::cloudwatch_metric("lib", "initialized", false, None);
             }
         });
         let env_value = redhook::real!(getenv)(name);
@@ -73,7 +74,7 @@ fn is_env_file() -> bool {
     let boo_value = metadata(ENV_FILE).is_ok();
     unsafe {
         if DEBUG {
-            println!("[crypteia] libcrypteia: is_env_file() -> {}", boo_value);
+            log::cloudwatch_metric("lib", "is_env_file", false, None);
         }
     }
     boo_value
@@ -96,7 +97,7 @@ fn read_env_file() {
     });
     unsafe {
         if DEBUG {
-            println!("[crypteia] libcrypteia: read_env_file()");
+            log::cloudwatch_metric("lib", "read_env_file", false, None);
         }
     }
     delete_file();
@@ -107,7 +108,7 @@ fn delete_file() {
     remove_file(ENV_FILE).unwrap();
     unsafe {
         if DEBUG {
-            println!("[crypteia] libcrypteia: delete_file()");
+            log::cloudwatch_metric("lib", "delete_file", false, None);
         }
     }
 }

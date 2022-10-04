@@ -1,3 +1,4 @@
+use crate::log;
 use anyhow::Result;
 use futures::future::join_all;
 use std::collections::HashMap;
@@ -30,9 +31,9 @@ pub async fn get_envs(env_vars: HashMap<String, String>) -> Result<HashMap<Strin
                         results.insert(key, value);
                     });
                 }
-                Err(error) => eprintln!("[crypteia] ssm: Parameter error {err}", err = error),
+                Err(error) => log::cloudwatch_metric("ssm", "error", true, Some(error.to_string())),
             },
-            Err(error) => eprintln!("[crypteia] ssm: JoinError {err}", err = error),
+            Err(error) => log::cloudwatch_metric("ssm", "error", true, Some(error.to_string())),
         }
     }
     Ok(results)
@@ -57,9 +58,14 @@ async fn ssm_get_parameter(
             }
         }
         Err(error) => {
-            eprintln!(
-                "[crypteia] ssm: Error calling ssm:GetParameter. Environment variable: {name} Path: {path} Error: {err}",
-                err = error
+            log::cloudwatch_metric(
+                "ssm",
+                "error",
+                true,
+                Some(format!(
+                    "Error calling ssm:GetParameter. Environment variable: {} Path: {} Error: {}",
+                    name, path, error
+                )),
             );
         }
     }
@@ -100,9 +106,14 @@ async fn ssm_get_parameters_by_path(
                 token = response.next_token;
             }
             Err(error) => {
-                eprintln!(
-                    "[crypteia] ssm: Error calling ssm:GetParametersByPath. Environment variable: {name} Path: {path} Error: {err}",
-                    err = error
+                log::cloudwatch_metric(
+                    "ssm",
+                    "error",
+                    true,
+                    Some(format!(
+                        "Error calling ssm:GetParametersByPath. Environment variable: {} Path: {} Error: {}",
+                        name, path, error
+                    )),
                 );
                 break;
             }
