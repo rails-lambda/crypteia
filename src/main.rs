@@ -1,3 +1,4 @@
+mod log;
 mod ssm;
 use lambda_extension::{service_fn, Error, LambdaEvent, NextEvent};
 use std::collections::HashMap;
@@ -8,10 +9,10 @@ const ENV_FILE: &str = "/tmp/crypteia.json";
 
 #[tokio::main]
 async fn main() -> Result<(), Error> {
-    println!("[crypteia] main: Init");
+    log::cloudwatch_metric("main", "initialized", false, None);
     let env_vars: HashMap<String, String> = std::env::vars().collect();
     let env_map = ssm::get_envs(env_vars).await.unwrap();
-    println!("[crypteia] main: Fetched environment variables");
+    log::cloudwatch_metric("main", "fetched", false, None);
     write_envs_to_tmp_json(env_map);
     let func = service_fn(parameters_extension);
     lambda_extension::run(func).await
@@ -20,7 +21,7 @@ async fn main() -> Result<(), Error> {
 async fn parameters_extension(event: LambdaEvent) -> Result<(), Error> {
     match event.next {
         NextEvent::Shutdown(_e) => {
-            println!("[crypteia] main: Shutdown");
+            log::cloudwatch_metric("main", "shutdown", false, None);
         }
         NextEvent::Invoke(_e) => {}
     }
