@@ -73,6 +73,18 @@ aws configure
 S3_BUCKET_NAME=my-bucket ./package/deploy
 ```
 
+#### Other Containers
+
+If you are using Crypteia on your own Docker containers without the Lambda Extension mechanics, you can simply set the `ENTRYPOINT` to the Crypteia binary which fetches your environment variables so the shared object preload can use them.
+
+```dockerfile
+FROM ghcr.io/customink/crypteia-extension-amzn:latest AS crypteia
+FROM ubuntu
+COPY --from=crypteia /opt /opt
+ENV LD_PRELOAD=/opt/lib/libcrypteia.so
+ENTRYPOINT /opt/extensions/crypteia
+```
+
 ## Usage
 
 First, you will need your secret environment variables setup in [AWS Systems Manager Parameter Store](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html). These can be whatever [hierarchy](https://docs.aws.amazon.com/systems-manager/latest/userguide/sysman-paramstore-hierarchies.html) you choose. Parameters can be any string type. However, we recommend using `SecureString` to ensure your secrets are encrypted within AWS. For example, let's assume the following paramter paths and values exists.
