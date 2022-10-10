@@ -22,3 +22,10 @@ chmod +x "$BIN"
 zip -r "${BIN}.zip" "$BIN"
 zip -r "libcrypteia-${BUILD_ARCH}.zip" "$LIB"
 cd ..
+
+rm -rf ./package/opt
+mkdir -p ./package/opt/extensions
+mkdir -p ./package/opt/lib
+cp ./build/crypteia-amzn ./package/opt/extensions/crypteia
+cp ./build/libcrypteia-amzn.so ./package/opt/lib/libcrypteia.so
+
