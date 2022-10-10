@@ -26,6 +26,5 @@ cd ..
 rm -rf ./package/opt
 mkdir -p ./package/opt/extensions
 mkdir -p ./package/opt/lib
-cp ./build/crypteia-amzn ./package/opt/extensions/crypteia
-cp ./build/libcrypteia-amzn.so ./package/opt/lib/libcrypteia.so
-
+cp "./build/crypteia-${BUILD_ARCH}" ./package/opt/extensions/crypteia
+cp "./build/libcrypteia-${BUILD_ARCH}.so" ./package/opt/lib/libcrypteia.so
