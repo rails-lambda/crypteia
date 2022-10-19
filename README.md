@@ -24,7 +24,7 @@ process.env.SECRET; // 1A2B3C4D5E6F
 ENV['SECRET'] # 1A2B3C4D5E6F
 ```
 
-We do this using our shared object library via the `LD_PRELOAD` environment variable in coordination with our [Lambda Extension](https://docs.aws.amazon.com/lambda/latest/dg/runtimes-extensions-api.html) binary file. See installation & usage sections for more details.
+We do this using our shared object library via the `LD_PRELOAD` environment variable in coordination with our [Lambda Extension](https://docs.aws.amazon.com/lambda/latest/dg/runtimes-extensions-api.html) binary file. Unlike other [AWS SSM Lambda Extension Solutions](https://aws.amazon.com/about-aws/whats-new/2022/10/aws-parameters-secrets-lambda-extension/) your code never needs to know where these environment variables come from. See installation & usage sections for more details.
 
 💕 Many thanks to the following projects & people for their work, code, and personal help that made Crypteia possible:
 
