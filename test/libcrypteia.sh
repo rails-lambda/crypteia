@@ -14,7 +14,7 @@ echo "============================="
 echo "== Simulating crypteia binary JSON write =="
 echo '{
   "SECRET": "1A2B3C4D5E6F",
-  "ACCESS_KEY": "G7H8I9J0K1L2", 
+  "ACCESS_KEY": "G7H8I9J0K1L2",
   "DB_URL": "mysql2://u:p@host:3306",
   "NR_KEY": "z6y5x4w3v2u1"
 }' > $CRYPTEIA_ENV_FILE
@@ -38,7 +38,7 @@ assert "./test/libcrypteia/_envfile.sh" \
 
 assert "./test/libcrypteia/empty-${TEST_LANG}.sh" \
        "undefined"
-       
+
 assert "./test/libcrypteia/fullpath-${TEST_LANG}.sh" \
        "x-crypteia-ssm-path:/crypteia/v5/myapp/envs" \
        "Because not replaced by a single env var."
