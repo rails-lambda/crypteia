@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
  - `ltrace` for debugging
+ - Patch Python's `os.environ` if `PYTHONPATH` is set accordingly. Needed for Crypteia's binary to work in Python environments.
 
 ### Changed
 
