@@ -1,0 +1,5 @@
+#!/bin/sh
+set -e
+
+echo "== [py27/Dockerfile-test] building... =="
+docker build --tag crypteia-debian-py27-test --file py27/Dockerfile-test .

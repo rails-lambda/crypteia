@@ -1,0 +1,13 @@
+#!/bin/sh
+set -e
+
+echo "== [py27/Dockerfile-test] bin/test =="
+docker run \
+  --rm \
+  --user root \
+  --env TEST_LANG=python \
+  --entrypoint "./test/libcrypteia.sh" \
+  --volume "${PWD}:/var/task" \
+  --workdir "/var/task" \
+  crypteia-debian-py27-test \
+  sh

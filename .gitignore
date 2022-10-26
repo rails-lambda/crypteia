@@ -4,3 +4,5 @@
 /package/package.zip
 /package/packaged.yaml
 outputs.json
+python/crypteia/build
+python/crypteia/src/*.egg-info
