@@ -61,10 +61,10 @@ COPY libcrypteia.so /opt/lib/libcrypteia.so
 ENV LD_PRELOAD=/opt/lib/libcrypteia.so
 ```
 
-If you are using Python you will need to add our Crypteia python package to the PYTHONPATH in order for things to "just work". The result of this will be that `os.environ["SECRET"]`, `os.environ.get("SECRET")`, and `os.getenv("SECRET")` will be routed to the `getenv` system call and therefore take advantage of the Crypteia rust extension.
+If you are using Python you will need to add our Crypteia python package to the `PYTHONPATH` in order for things to "just work". The result of this will be that `os.environ["SECRET"]`, `os.environ.get("SECRET")`, and `os.getenv("SECRET")` will be routed to the `getenv` system call and therefore take advantage of the Crypteia rust extension.
 
 ```dockerfile
-ENV PYTHONPATH=${PYTHONPATH:/opt/crypteia/python}
+ENV PYTHONPATH=/opt/crypteia/python
 ```
 
 ⚠️ When building your own Lambda Containers, please make sure [glibc](https://www.gnu.org/software/libc/) is installed since this is used by [redhook](https://github.com/geofft/redhook).
