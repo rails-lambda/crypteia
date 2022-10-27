@@ -161,7 +161,7 @@ Please use AWS' [Restricting access to Systems Manager parameters using IAM poli
     },
     {
       "Action": "kms:Decrypt",
-      "Resource": "*arn:aws:kms:us-east-1:123456789012:key/4914ec06-e888-4ea5-a371-5b88eEXAMPLE*",
+      "Resource": "arn:aws:kms:us-east-1:123456789012:key/4914ec06-e888-4ea5-a371-5b88eEXAMPLE",
       "Effect": "Allow"
     }
   ]

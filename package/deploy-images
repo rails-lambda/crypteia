@@ -6,8 +6,6 @@ if [ -z "${CRYPTEIA_VERSION}" ]; then
   exit 1
 fi
 
-TAG=
-
 echo "== [Lambda Extension Images] building... =="
 
 docker build \
