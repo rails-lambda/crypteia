@@ -1,4 +1,4 @@
 #!/bin/sh
 set -e
 
-mv /usr/local/php/8.1.11/ini/conf.d/xdebug.ini /usr/local/php/8.1.11/ini/conf.d/xdebug.ini.bak
+mv /usr/local/php/current/ini/conf.d/xdebug.ini /usr/local/php/current/ini/conf.d/xdebug.ini.bak
