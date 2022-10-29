@@ -170,36 +170,50 @@ Please use AWS' [Restricting access to Systems Manager parameters using IAM poli
 
 ## Development
 
-This project is built for [GitHub Codespcaes](https://github.com/features/codespaces) which may not be available to everyone. Thankfully you can use this same devcontainer.json specification automatically with [VS Code Remote Development](https://code.visualstudio.com/docs/remote/remote-overview) which allows you to clone this repo and [open the folder in a container](https://code.visualstudio.com/docs/remote/containers#_quick-start-open-an-existing-folder-in-a-container).
+This project is built for [GitHub Codespcaes](https://github.com/features/codespaces) using the [Development Container](https://containers.dev) specification. Even though Codespaces may not be available to everyone, this project's containers are easy to work for anyone with any editor.
 
-Our development container is based on the [vscode-remote-try-rust](https://github.com/microsoft/vscode-remote-try-rust) demo project. For details on the VS Code Rust development containers, have a look here: https://github.com/microsoft/vscode-dev-containers/tree/main/containers/rust/history. Once you have the repo cloned or setup in a development container, run the following command. This will install and build your project.
+Our development container is based on the [vscode-remote-try-rust](https://github.com/microsoft/vscode-remote-try-rust) demo project. For details on the VS Code Rust development container, have a look at the [container's history](https://github.com/microsoft/vscode-dev-containers/tree/main/containers/rust/history). Once you have the repo cloned and setup with a dev container using Codespaces, [VS Code](#using-vs-code), or the [Dev Container CLI](#dev-container-cli), run the following commands. This will install packages, build your project, and run tests without needing to connect to SSM.
+
 
 ```shell
 ./bin/setup
+./bin/test-local
 ```
 
-Optionally, you can setup/build the Amazon Linux 2 files. This will use Docker in Docker to download AWS SAM & Lambda images to build cryptia using what is present (like glibc) in those environments.
-
-```shell
-./amzn/setup
-```
-
-#### Running Tests
-
-Requires an AWS account to populate test SSM Parameters. The AWS CLI is installed on the devcontainer. Set it up with your **test credentials** using:
+If you want to test SSm with your AWS account, the AWS CLI is installed on the dev container. Set it up with your **test credentials** using:
 
 ```shell
 aws configure
 ```
 
-Once complete, you can run the tests using the following command. If you make changes to the code, make sure to run `bin/setup` again whick will run cargo build for you.
+You can to develop the Amazon Linux 2 support, This will use Docker in Docker to download AWS SAM & Lambda images to build cryptia using what is present (like glibc) in that environment.
 
 ```shell
-./bin/test
-```
-
-Again, if you are working on the Amazon Linux 2 project files, assuming you have already run `./amzn/setup`, you can run the same tests above using that environment.
-
-```shell
+./amzn/setup
 ./amzn/test
 ```
+
+#### Using VS Code
+
+If you have the [Visual Studio Code Dev Container](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension installed you can easily clone this repo locally, use the "Open Folder in Container..." command, and use the integrated terminal for your setup and test commands. Example shown below:
+
+![VS Code showing the "Dev Containers: Open Folder in Container..." command.](/images/readme-devcontainer-open-folder.png)
+
+![VS Code window with the Crypteia project open in a dev container. Shown too are the tests running.](/images/readme-devcontainer-vscode.png)
+
+#### Dev Container CLI
+
+You can use the open-source [Dev Container CLI](https://github.com/devcontainers/cli) to mimic what Codespaces and/or VS Code are doing for you. In this way, you can use different editors. You must have Docker installed. Here are the commands to build the dev container and setup/test the project.
+
+```shell
+devcontainer build --workspace-folder .
+devcontainer up --workspace-folder .
+devcontainer run-user-commands --workspace-folder .
+```
+
+```shell
+devcontainer exec --workspace-folder . ./bin/setup
+devcontainer exec --workspace-folder . ./bin/test-local
+```
+
+![Showing Sublime Text on a Mac using the Dev Container CLI to run Crypteia tests.](/images/readme-devcontainer-cli-sublime.png)
