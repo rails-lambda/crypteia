@@ -21,7 +21,8 @@ jobs:
       - name: Build & Run Development Container
         uses: devcontainers/ci@v0.2
         with:
-          push: never
+          push: true
+          imageName: ghcr.io/customink/crypteia-devcontainer
           cacheFrom: ghcr.io/customink/crypteia-devcontainer
           env: |
             AWS_ACCESS_KEY_ID
@@ -35,7 +36,8 @@ jobs:
       - name: Build & Run Development Container (w/Amazon Linux)
         uses: devcontainers/ci@v0.2
         with:
-          push: never
+          push: true
+          imageName: ghcr.io/customink/crypteia-devcontainer
           cacheFrom: ghcr.io/customink/crypteia-devcontainer
           runCmd: |
             ./amzn/setup
@@ -43,7 +45,8 @@ jobs:
       - name: Build & Run Development Container (w/ Python)
         uses: devcontainers/ci@v0.2
         with:
-          push: never
+          push: true
+          imageName: ghcr.io/customink/crypteia-devcontainer
           cacheFrom: ghcr.io/customink/crypteia-devcontainer
           env: |
             AWS_ACCESS_KEY_ID
