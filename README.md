@@ -217,4 +217,3 @@ devcontainer exec --workspace-folder . ./bin/test-local
 ```
 
 ![Showing Sublime Text on a Mac using the Dev Container CLI to run Crypteia tests.](/images/readme-devcontainer-cli-sublime.png)
-
