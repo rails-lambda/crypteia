@@ -17,7 +17,7 @@ Environment:
 Into real runtime (no matter the lang) environment variables backed by SSM Parameter Store. For example, assuming the SSM Parameter path above returns `1A2B3C4D5E6F` as the value. Your code would return:
 
 ```javascript
-# node
+// node
 process.env.SECRET; // 1A2B3C4D5E6F
 ```
 
