@@ -180,6 +180,28 @@ Please use AWS' [Restricting access to Systems Manager parameters using IAM poli
 }
 ```
 
+#### Troubleshooting
+
+Crypteia has very verbose logging which enabled by creating an environment variable:
+
+```ruby
+CRYPTEIA_DEBUG: true
+```
+
+Example of logs:
+
+```log
+
+{"All":"all","ErrorMessage":"","_aws":{"CloudWatchMetrics":[{"Dimensions":[["All","lib"]],"Metrics":[{"Name":"initialized","Unit":"Count"}],"Namespace":"Crypteia"}],"Timestamp":1670424178585},"initialized":1,"lib":"lib"}
+{"All":"all","ErrorMessage":"","_aws":{"CloudWatchMetrics":[{"Dimensions":[["All","main"]],"Metrics":[{"Name":"initialized","Unit":"Count"}],"Namespace":"Crypteia"}],"Timestamp":1670424178590},"initialized":1,"main":"main"}
+{"All":"all","ErrorMessage":"","_aws":{"CloudWatchMetrics":[{"Dimensions":[["All","main"]],"Metrics":[{"Name":"fetched","Unit":"Count"}],"Namespace":"Crypteia"}],"Timestamp":1670424178831},"fetched":1,"main":"main"}
+{"All":"all","ErrorMessage":"","_aws":{"CloudWatchMetrics":[{"Dimensions":[["All","lib"]],"Metrics":[{"Name":"initialized","Unit":"Count"}],"Namespace":"Crypteia"}],"Timestamp":1670424178892},"initialized":1,"lib":"lib"}
+{"All":"all","ErrorMessage":"","_aws":{"CloudWatchMetrics":[{"Dimensions":[["All","lib"]],"Metrics":[{"Name":"is_env_file","Unit":"Count"}],"Namespace":"Crypteia"}],"Timestamp":1670424179575},"is_env_file":1,"lib":"lib"}
+{"All":"all","ErrorMessage":"","_aws":{"CloudWatchMetrics":[{"Dimensions":[["All","lib"]],"Metrics":[{"Name":"read_env_file","Unit":"Count"}],"Namespace":"Crypteia"}],"Timestamp":1670424179575},"lib":"lib","read_env_file":1}
+{"All":"all","ErrorMessage":"","_aws":{"CloudWatchMetrics":[{"Dimensions":[["All","lib"]],"Metrics":[{"Name":"delete_file","Unit":"Count"}],"Namespace":"Crypteia"}],"Timestamp":1670424179575},"delete_file":1,"lib":"lib"}
+
+```
+
 ## Development
 
 This project is built for [GitHub Codespcaes](https://github.com/features/codespaces) using the [Development Container](https://containers.dev) specification. Even though Codespaces may not be available to everyone, this project's containers are easy to work for anyone with any editor.
@@ -229,26 +251,3 @@ devcontainer exec --workspace-folder . ./bin/test-local
 ```
 
 ![Showing Sublime Text on a Mac using the Dev Container CLI to run Crypteia tests.](/images/readme-devcontainer-cli-sublime.png)
-
-
-#### Troubleshooting
-
-Crypteia has very verbose logging which enabled by creating an environment variable:
-
-```ruby
-CRYPTEIA_DEBUG: true
-```
-
-Example of logs:
-
-```log
-
-{"All":"all","ErrorMessage":"","_aws":{"CloudWatchMetrics":[{"Dimensions":[["All","lib"]],"Metrics":[{"Name":"initialized","Unit":"Count"}],"Namespace":"Crypteia"}],"Timestamp":1670424178585},"initialized":1,"lib":"lib"}
-{"All":"all","ErrorMessage":"","_aws":{"CloudWatchMetrics":[{"Dimensions":[["All","main"]],"Metrics":[{"Name":"initialized","Unit":"Count"}],"Namespace":"Crypteia"}],"Timestamp":1670424178590},"initialized":1,"main":"main"}
-{"All":"all","ErrorMessage":"","_aws":{"CloudWatchMetrics":[{"Dimensions":[["All","main"]],"Metrics":[{"Name":"fetched","Unit":"Count"}],"Namespace":"Crypteia"}],"Timestamp":1670424178831},"fetched":1,"main":"main"}
-{"All":"all","ErrorMessage":"","_aws":{"CloudWatchMetrics":[{"Dimensions":[["All","lib"]],"Metrics":[{"Name":"initialized","Unit":"Count"}],"Namespace":"Crypteia"}],"Timestamp":1670424178892},"initialized":1,"lib":"lib"}
-{"All":"all","ErrorMessage":"","_aws":{"CloudWatchMetrics":[{"Dimensions":[["All","lib"]],"Metrics":[{"Name":"is_env_file","Unit":"Count"}],"Namespace":"Crypteia"}],"Timestamp":1670424179575},"is_env_file":1,"lib":"lib"}
-{"All":"all","ErrorMessage":"","_aws":{"CloudWatchMetrics":[{"Dimensions":[["All","lib"]],"Metrics":[{"Name":"read_env_file","Unit":"Count"}],"Namespace":"Crypteia"}],"Timestamp":1670424179575},"lib":"lib","read_env_file":1}
-{"All":"all","ErrorMessage":"","_aws":{"CloudWatchMetrics":[{"Dimensions":[["All","lib"]],"Metrics":[{"Name":"delete_file","Unit":"Count"}],"Namespace":"Crypteia"}],"Timestamp":1670424179575},"delete_file":1,"lib":"lib"}
-
-```
