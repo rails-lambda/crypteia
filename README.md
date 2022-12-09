@@ -121,12 +121,22 @@ Environment:
 
 When your function initializes, each of the four environmet variables (`SECRET`, `ACCESS_KEY`, `DB_URL`, and `NR_KEY`) will return values from their respective SSM paths.
 
-```
+```javascript
+// node
 process.env.SECRET;       // 1A2B3C4D5E6F
 process.env.ACCESS_KEY;   // G7H8I9J0K1L2
 process.env.DB_URL;       // mysql2://u:p@host:3306
 process.env.NR_KEY;       // z6y5x4w3v2u1
 ```
+
+```ruby
+# ruby
+env["SECRET"];       ## 1A2B3C4D5E6F
+env["ACCESS_KEY"];   ## G7H8I9J0K1L2
+env["DB_URL"];       ## mysql2://u:p@host:3306
+env["NR_KEY"];       ## z6y5x4w3v2u1
+```
+
 
 Here are a few details about the internal implementation on how Crypteia works:
 
@@ -168,6 +178,28 @@ Please use AWS' [Restricting access to Systems Manager parameters using IAM poli
     }
   ]
 }
+```
+
+#### Troubleshooting
+
+Crypteia has very verbose logging which enabled by creating an environment variable:
+
+```ruby
+CRYPTEIA_DEBUG: true
+```
+
+Example of logs:
+
+```log
+
+{"All":"all","ErrorMessage":"","_aws":{"CloudWatchMetrics":[{"Dimensions":[["All","lib"]],"Metrics":[{"Name":"initialized","Unit":"Count"}],"Namespace":"Crypteia"}],"Timestamp":1670424178585},"initialized":1,"lib":"lib"}
+{"All":"all","ErrorMessage":"","_aws":{"CloudWatchMetrics":[{"Dimensions":[["All","main"]],"Metrics":[{"Name":"initialized","Unit":"Count"}],"Namespace":"Crypteia"}],"Timestamp":1670424178590},"initialized":1,"main":"main"}
+{"All":"all","ErrorMessage":"","_aws":{"CloudWatchMetrics":[{"Dimensions":[["All","main"]],"Metrics":[{"Name":"fetched","Unit":"Count"}],"Namespace":"Crypteia"}],"Timestamp":1670424178831},"fetched":1,"main":"main"}
+{"All":"all","ErrorMessage":"","_aws":{"CloudWatchMetrics":[{"Dimensions":[["All","lib"]],"Metrics":[{"Name":"initialized","Unit":"Count"}],"Namespace":"Crypteia"}],"Timestamp":1670424178892},"initialized":1,"lib":"lib"}
+{"All":"all","ErrorMessage":"","_aws":{"CloudWatchMetrics":[{"Dimensions":[["All","lib"]],"Metrics":[{"Name":"is_env_file","Unit":"Count"}],"Namespace":"Crypteia"}],"Timestamp":1670424179575},"is_env_file":1,"lib":"lib"}
+{"All":"all","ErrorMessage":"","_aws":{"CloudWatchMetrics":[{"Dimensions":[["All","lib"]],"Metrics":[{"Name":"read_env_file","Unit":"Count"}],"Namespace":"Crypteia"}],"Timestamp":1670424179575},"lib":"lib","read_env_file":1}
+{"All":"all","ErrorMessage":"","_aws":{"CloudWatchMetrics":[{"Dimensions":[["All","lib"]],"Metrics":[{"Name":"delete_file","Unit":"Count"}],"Namespace":"Crypteia"}],"Timestamp":1670424179575},"delete_file":1,"lib":"lib"}
+
 ```
 
 ## Development
@@ -219,4 +251,3 @@ devcontainer exec --workspace-folder . ./bin/test-local
 ```
 
 ![Showing Sublime Text on a Mac using the Dev Container CLI to run Crypteia tests.](/images/readme-devcontainer-cli-sublime.png)
-
