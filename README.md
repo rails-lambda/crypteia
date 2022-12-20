@@ -58,16 +58,16 @@ sequenceDiagram
   WRK->>CMD: Run
   activate CMD
   CMD->>LIB: LD_PRELOAD
+  activate LIB
   LIB->>LIB: crypteia.json (read/delete)
   LIB->>CMD: 🔐 Shared Memory
+  deactivate LIB
   CMD->>CMD: getenv(3)
   CMD->>WRK: 
   deactivate CMD
 ```
 
-Secrets are fetched in batch via the `ENTRYPOINT`. This is done for you automatically with the Lambda Runtime Interface Client as part of the Lambda Extensions interface. When using Ctypteia with other container tools, calling the binary `/opt/extensions/crypteia` would need to be as an explicit `ENTRYPOINT` or part of that script. 
-
-When your `CMD` process is running, replacing `x-crypteia` prefixed environment values with `getenv(3)` is done quickly in memory.
+Secrets are fetched in batch via the `ENTRYPOINT`. This is done for you automatically with the Lambda Runtime Interface Client as part of the Lambda Extensions interface. When using Ctypteia with other container tools, calling the binary `/opt/extensions/crypteia` would need to be as an explicit `ENTRYPOINT` or part of that script. When your `CMD` process is running, replacing `x-crypteia` prefixed environment values with `getenv(3)` is done quickly in memory.
 
 ## Installation
 
