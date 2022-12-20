@@ -31,6 +31,42 @@ We do this using our shared object library via the `LD_PRELOAD` environment vari
 - **[Hunter Madison](https://github.com/hmadison)**: Who taught me about how to use redhook based on Michele Mancioppi's [opentelemetry-injector](https://github.com/mmanciop/opentelemetry-injector) project.
 - **[Jake Scott](https://github.com/jakejscott)**: And his [rust-parameters-lambda-extension](https://github.com/jakejscott/rust-parameters-lambda-extension) project which served as the starting point for this project.
 
+## Architecture
+
+There are two main parts for Crypteia, the `crypteia` binary and `libcrypteia.so` shared object file. The following sequence diagram should help highlight how this works with an image's `ENTRYPOINT` and `CMD` interface.
+
+```mermaid
+sequenceDiagram
+  actor WRK as Container Workload
+  participant ENT as 🚪 ENTRYPOINT
+  participant BIN as 🗑 (bin) crypteia
+  participant LIB as 📚 (lib) libcrypteia.so
+  participant CMD as 📢 CMD
+  participant AWS as 🔒 Secrets Storage
+  WRK->>ENT: Run
+  activate ENT
+  ENT->>BIN: Lambda RIC or ENTRYPOINT
+  activate BIN
+  BIN->>AWS: Batch Fetch
+  AWS->>BIN: Batch Response
+  BIN->>BIN: crypteia.json (write)
+  BIN->>WRK: 
+  deactivate BIN
+  deactivate ENT
+  WRK->>CMD: Run
+  activate CMD
+  CMD->>LIB: LD_PRELOAD
+  LIB->>LIB: crypteia.json (read/delete)
+  LIB->>CMD: 🔐 Shared Memory
+  CMD->>CMD: getenv(3)
+  CMD->>WRK: 
+  deactivate CMD
+```
+
+Secrets are fetched in batch via the `ENTRYPOINT`. This is done for you automatically with the Lambda Runtime Interface Client as part of the Lambda Extensions interface. When using Ctypteia with other container tools, calling the binary `/opt/extensions/crypteia` would need to be as an explicit `ENTRYPOINT` or part of that script. 
+
+When your `CMD` process is running, replacing `x-crypteia` prefixed environment values with `getenv(3)` is done quickly in memory.
+
 ## Installation
 
 When building your own Lambda Containers, use both the `crypteia` binary and `libcrypteia.so` shared object files that match your platform. Target platform naming conventions include the following:
