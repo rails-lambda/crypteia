@@ -14,7 +14,7 @@ Environment:
     SECRET: x-crypteia-ssm:/myapp/SECRET
 ```
 
-Into real runtime (no matter the lang) environment variables backed by SSM Parameter Store. For example, assuming the SSM Parameter path above returns `1A2B3C4D5E6F` as the value. Your code would return:
+... into real runtime (no matter the lang) environment variables backed by SSM Parameter Store. For example, assuming the SSM Parameter path above returns `1A2B3C4D5E6F` as the value, your code would return:
 
 ```javascript
 // node
@@ -26,12 +26,12 @@ process.env.SECRET; // 1A2B3C4D5E6F
 ENV['SECRET'] # 1A2B3C4D5E6F
 ```
 
-We do this using our shared object library via the `LD_PRELOAD` environment variable in coordination with our [Lambda Extension](https://docs.aws.amazon.com/lambda/latest/dg/runtimes-extensions-api.html) binary file. Unlike other [AWS SSM Lambda Extension Solutions](https://aws.amazon.com/about-aws/whats-new/2022/10/aws-parameters-secrets-lambda-extension/) your code never needs to know where these environment variables come from. See installation & usage sections for more details.
+We do this using our shared object library via the `LD_PRELOAD` environment variable in coordination with our [Lambda Extension](https://docs.aws.amazon.com/lambda/latest/dg/runtimes-extensions-api.html) binary file. Unlike other [AWS SSM Lambda Extension Solutions](https://aws.amazon.com/about-aws/whats-new/2022/10/aws-parameters-secrets-lambda-extension/) your code never needs to know where these environment variables come from. See the [Installation](#installation) and [Usage](#usage) sections for more details.
 
-💕 Many thanks to the following projects & people for their work, code, and personal help that made Crypteia possible:
+💕 Many thanks to the following projects and people for their work, code, and personal help that made Crypteia possible:
 
-- **[Hunter Madison](https://github.com/hmadison)**: Who taught me about how to use redhook based on Michele Mancioppi's [opentelemetry-injector](https://github.com/mmanciop/opentelemetry-injector) project.
-- **[Jake Scott](https://github.com/jakejscott)**: And his [rust-parameters-lambda-extension](https://github.com/jakejscott/rust-parameters-lambda-extension) project which served as the starting point for this project.
+- **[Hunter Madison](https://github.com/hmadison)**, who taught me about how to use [redhook](https://github.com/geofft/redhook) based on Michele Mancioppi's [opentelemetry-injector](https://github.com/mmanciop/opentelemetry-injector) project.
+- **[Jake Scott](https://github.com/jakejscott)** and his [rust-parameters-lambda-extension](https://github.com/jakejscott/rust-parameters-lambda-extension) project which served as the starting point for this project.
 
 ## Architecture
 
@@ -73,14 +73,14 @@ Secrets are fetched in batch via the `ENTRYPOINT`. This is done for you automati
 
 When building your own Lambda Containers, use both the `crypteia` binary and `libcrypteia.so` shared object files that match your platform. Target platform naming conventions include the following:
 
-- Amazon Linux 2: Uses the `-amzn` suffix.
-- Debian, Ubuntu, Etc: Uses the `-debian` suffix.
+- Amazon Linux 2: uses the `-amzn` suffix.
+- Debian, Ubuntu, etc.: uses the `-debian` suffix.
 
-⚠️ For now our project supports the `x86_64` architecture, but we plan to release `arm64` variants soon. Follow or contribute in our [GitHub Issue](https://github.com/customink/crypteia/issues/5) which tracks this topic.
+⚠️ For now our project supports the `x86_64` architecture, but we plan to release `arm64` variants soon. Follow or contribute in our [GitHub Issues](https://github.com/customink/crypteia/issues/5) which tracks this topic.
 
 #### Lambda Containers
 
-You have two options here. The easiest is to use Docker's multi stage builds with our [Extension Containers]([https://github.com/orgs/customink/packages?ecosystem=container&tab=packages&ecosystem=container&q=extension](https://github.com/orgs/customink/packages?repo_name=crypteia&q=extension)) to copy the `/opt` directory matching your platform and Crypteia version number. example below. Remember to use `-debian` vs `-amzn` if you are using your own Linux containers. Or change the version number depending on your needs.
+There are two options for Lambda containers. The easiest is to use Docker's multi stage builds with our [Extension Containers]([https://github.com/orgs/customink/packages?ecosystem=container&tab=packages&ecosystem=container&q=extension](https://github.com/orgs/customink/packages?repo_name=crypteia&q=extension)) to copy the `/opt` directory matching your platform and Crypteia version number. example below. Remember to use `-debian` vs `-amzn` if you are using your own Linux containers. Or change the version number depending on your needs.
 
 ```dockerfile
 FROM ghcr.io/customink/crypteia-extension-amzn:latest AS crypteia
@@ -89,7 +89,7 @@ COPY --from=crypteia /opt /opt
 ENV LD_PRELOAD=/opt/lib/libcrypteia.so
 ```
 
-Alternatively, you can download your platform's binary and shared object file from our [Releases](https://github.com/customink/crypteia/releases) page and place them into your projects Docker build directory. Remember, to remove the platform file suffix. Example:
+Alternatively, you can download your platform's binary and shared object file from our [Releases](https://github.com/customink/crypteia/releases) page and place them into your projects Docker build directory. Remember to remove the platform file suffix. Example:
 
 ```dockerfile
 RUN mkdir -p /opt/lib
@@ -131,7 +131,7 @@ ENTRYPOINT /opt/extensions/crypteia
 
 ## Usage
 
-First, you will need your secret environment variables setup in [AWS Systems Manager Parameter Store](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html). These can be whatever [hierarchy](https://docs.aws.amazon.com/systems-manager/latest/userguide/sysman-paramstore-hierarchies.html) you choose. Parameters can be any string type. However, we recommend using `SecureString` to ensure your secrets are encrypted within AWS. For example, let's assume the following paramter paths and values exists.
+First, you will need your secret environment variables setup in [AWS Systems Manager Parameter Store](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html). These can be whatever [hierarchy](https://docs.aws.amazon.com/systems-manager/latest/userguide/sysman-paramstore-hierarchies.html) you choose. Parameters can be any string type. However, we recommend using `SecureString` to ensure your secrets are encrypted within AWS. For example, let's assume the following paramter paths and values exist:
 
 - `/myapp/SECRET` -> `1A2B3C4D5E6F`
 - `/myapp/access-key` -> `G7H8I9J0K1L2`
@@ -143,7 +143,7 @@ Crypteia supports two methods to fetch SSM parameters:
 1. `x-crypteia-ssm:` - Single path for a single environment variable.
 2. `x-crypteia-ssm-path:` - Path prefix to fetch many environment variables.
 
-Using whatever serverless framework you prefer, setup your function's environment variables using either of the two SSM interfaces from above. For example, here is a environment variables section for an [AWS SAM](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-getting-started.html) template that demonstrates all of Crypteia's features.
+Using whatever serverless framework you prefer, and set up your function's environment variables using either of the two SSM interfaces from above. For example, here is an environment variables section for an [AWS SAM](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-getting-started.html) template that demonstrates all of Crypteia's features.
 
 ```yaml
 Environment:
@@ -173,16 +173,15 @@ env["DB_URL"];       ## mysql2://u:p@host:3306
 env["NR_KEY"];       ## z6y5x4w3v2u1
 ```
 
+Here are a few details about how Crypteia works with respect to the internal implementation:
 
-Here are a few details about the internal implementation on how Crypteia works:
-
-1. When accessing a single parameter path via `x-crypteia-ssm:` the environment variable name available to your runtime is used as is. No part of the parameter path effects the resulting name.
-2. When using `x-crypteia-ssm-path:` the environment variable name can be anything and the value is left unchanged.
+1. When accessing a single parameter path via `x-crypteia-ssm:`, the environment variable name available to your runtime is used as is. No part of the parameter path influences the resulting name.
+2. When using `x-crypteia-ssm-path:`, the environment variable name can be anything and the value is left unchanged.
 3. The parameter path hierarchy passed with `x-crypteia-ssm-path:` must be one level deep and end with valid environment variable names. These names must match environement placeholders using `x-crypteia` values.
 
-For security, the usage of `DB_URL: x-crypteia` placeholders ensures that your application's configuration is in full control on which dynamic values can be used with `x-crypteia-ssm-path:`.
+For security, the usage of `DB_URL: x-crypteia` placeholders ensures that your application's configuration is in full control of which dynamic values can be used with `x-crypteia-ssm-path:`.
 
-Shown below is a simple Node.js 16 function which has the appropriate [IAM Permissions](#iam-permissions) and Crypteia extension via a Lambda Layer installed. Also configured are the needed `LD_PRELOAD` and `SECRET` environment variables. The code of this function log the value of the `process.env.SECRET` which does correctly resolve to the value within SSM Parameter Store.
+Shown below is a simple Node.js 16 function which has the appropriate [IAM Permissions](#iam-permissions) and Crypteia extension via an installed Lambda Layer. Also configured are the necessary `LD_PRELOAD` and `SECRET` environment variables. The code in this function logs the value of the `process.env.SECRET` which correctly resolves to the value from SSM Parameter Store.
 
 ![Screenshot of the Environment variables in the AWS Lambda Console showing `LD_PRELOAD` to `/opt/lib/libcrypteia.so` and `SECRET` to `x-crypteia-ssm:/myapp/SECRET`.](/images/readme-env-variables.png)
 
@@ -190,7 +189,7 @@ Shown below is a simple Node.js 16 function which has the appropriate [IAM Permi
 
 #### IAM Permissions
 
-Please use AWS' [Restricting access to Systems Manager parameters using IAM policies](https://docs.aws.amazon.com/systems-manager/latest/userguide/sysman-paramstore-access.html) guide for details on what policies your function's IAM Role will need. For an appliction to pull both single parameters as well as bulk paths, I have found the following policy helpful. It assumed the `/myapp` prefix and using AWS default KMS encryption key.
+Please refer to the AWS guide on [Restricting access to Systems Manager parameters using IAM policies](https://docs.aws.amazon.com/systems-manager/latest/userguide/sysman-paramstore-access.html) for details on which policies your function's IAM Role will need. For an appliction to pull both single parameters as well as bulk paths, I have found the following policy helpful; it assumes the `/myapp` prefix and uses the AWS default KMS encryption key:
 
 ```json
 {
@@ -218,7 +217,7 @@ Please use AWS' [Restricting access to Systems Manager parameters using IAM poli
 
 #### Troubleshooting
 
-Crypteia has very verbose logging which enabled by creating an environment variable:
+Crypteia has very verbose logging which is enabled via the `CRYPTEIA_DEBUG` environment variable:
 
 ```ruby
 CRYPTEIA_DEBUG: true
@@ -227,7 +226,6 @@ CRYPTEIA_DEBUG: true
 Example of logs:
 
 ```log
-
 {"All":"all","ErrorMessage":"","_aws":{"CloudWatchMetrics":[{"Dimensions":[["All","lib"]],"Metrics":[{"Name":"initialized","Unit":"Count"}],"Namespace":"Crypteia"}],"Timestamp":1670424178585},"initialized":1,"lib":"lib"}
 {"All":"all","ErrorMessage":"","_aws":{"CloudWatchMetrics":[{"Dimensions":[["All","main"]],"Metrics":[{"Name":"initialized","Unit":"Count"}],"Namespace":"Crypteia"}],"Timestamp":1670424178590},"initialized":1,"main":"main"}
 {"All":"all","ErrorMessage":"","_aws":{"CloudWatchMetrics":[{"Dimensions":[["All","main"]],"Metrics":[{"Name":"fetched","Unit":"Count"}],"Namespace":"Crypteia"}],"Timestamp":1670424178831},"fetched":1,"main":"main"}
@@ -235,14 +233,13 @@ Example of logs:
 {"All":"all","ErrorMessage":"","_aws":{"CloudWatchMetrics":[{"Dimensions":[["All","lib"]],"Metrics":[{"Name":"is_env_file","Unit":"Count"}],"Namespace":"Crypteia"}],"Timestamp":1670424179575},"is_env_file":1,"lib":"lib"}
 {"All":"all","ErrorMessage":"","_aws":{"CloudWatchMetrics":[{"Dimensions":[["All","lib"]],"Metrics":[{"Name":"read_env_file","Unit":"Count"}],"Namespace":"Crypteia"}],"Timestamp":1670424179575},"lib":"lib","read_env_file":1}
 {"All":"all","ErrorMessage":"","_aws":{"CloudWatchMetrics":[{"Dimensions":[["All","lib"]],"Metrics":[{"Name":"delete_file","Unit":"Count"}],"Namespace":"Crypteia"}],"Timestamp":1670424179575},"delete_file":1,"lib":"lib"}
-
 ```
 
 ## Development
 
-This project is built for [GitHub Codespcaes](https://github.com/features/codespaces) using the [Development Container](https://containers.dev) specification. Even though Codespaces may not be available to everyone, this project's containers are easy to work for anyone with any editor.
+This project is built for [GitHub Codespcaes](https://github.com/features/codespaces) using the [Development Container](https://containers.dev) specification. Even though Codespaces may not be available to everyone, this project's containers are simple for anyone to make work with any editor.
 
-Our development container is based on the [vscode-remote-try-rust](https://github.com/microsoft/vscode-remote-try-rust) demo project. For details on the VS Code Rust development container, have a look at the [container's history](https://github.com/microsoft/vscode-dev-containers/tree/main/containers/rust/history). Once you have the repo cloned and setup with a dev container using Codespaces, [VS Code](#using-vs-code), or the [Dev Container CLI](#dev-container-cli), run the following commands. This will install packages, build your project, and run tests without needing to connect to SSM.
+Our development container is based on the [vscode-remote-try-rust](https://github.com/microsoft/vscode-remote-try-rust) demo project. For details on the VS Code Rust development container, have a look at the [container's history](https://github.com/microsoft/vscode-dev-containers/tree/main/containers/rust/history). Once you have the repo cloned and set up with a dev container using Codespaces, [VS Code](#using-vs-code), or the [Dev Container CLI](#dev-container-cli), run the following commands which will install packages, build your project, and run tests without needing to connect to SSM:
 
 
 ```shell
@@ -250,13 +247,13 @@ Our development container is based on the [vscode-remote-try-rust](https://githu
 ./bin/test-local
 ```
 
-If you want to test SSm with your AWS account, the AWS CLI is installed on the dev container. Set it up with your **test credentials** using:
+If you want to test SSM with your AWS account, the AWS CLI is installed on the dev container. Set it up with your **test credentials** using:
 
 ```shell
 aws configure
 ```
 
-You can to develop the Amazon Linux 2 support, This will use Docker in Docker to download AWS SAM & Lambda images to build cryptia using what is present (like glibc) in that environment.
+You can also develop using the Amazon Linux 2 support. This will use Docker-in-Docker to download AWS SAM and Lambda images to build cryptia using what is present (e.g. glibc) in your environment:
 
 ```shell
 ./amzn/setup
@@ -265,7 +262,7 @@ You can to develop the Amazon Linux 2 support, This will use Docker in Docker to
 
 #### Using VS Code
 
-If you have the [Visual Studio Code Dev Container](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension installed you can easily clone this repo locally, use the "Open Folder in Container..." command, and use the integrated terminal for your setup and test commands. Example shown below:
+If you have the [Visual Studio Code Dev Container](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension installed you can easily clone this repository locally, use the "Open Folder in Container..." command, and use the integrated terminal for your setup and test commands. Example:
 
 ![VS Code showing the "Dev Containers: Open Folder in Container..." command.](/images/readme-devcontainer-open-folder.png)
 
@@ -273,7 +270,7 @@ If you have the [Visual Studio Code Dev Container](https://marketplace.visualstu
 
 #### Dev Container CLI
 
-You can use the open-source [Dev Container CLI](https://github.com/devcontainers/cli) to mimic what Codespaces and/or VS Code are doing for you. In this way, you can use different editors. You must have Docker installed. Here are the commands to build the dev container and setup/test the project.
+You can use the open-source [Dev Container CLI](https://github.com/devcontainers/cli) to mimic what Codespaces and/or VS Code are doing for you. In this way, you can use different editors. You must have Docker installed. Here are the commands to build the dev container and setup/test the project:
 
 ```shell
 devcontainer build --workspace-folder .
