@@ -13,7 +13,7 @@ crate_type = ["cdylib"]
 [dependencies]
 # bin
 anyhow = "1.0.57"
-tokio = { version = "1.19.2", features = ["full"] }
+tokio = { version = "1.20.3", features = ["full"] }
 futures = { version = "0.3.21" }
 aws-config = "0.14.0"
 aws-sdk-ssm = "0.14.0"
