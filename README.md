@@ -84,7 +84,7 @@ There are two options for Lambda containers. The easiest is to use Docker's mult
 
 ```dockerfile
 FROM ghcr.io/customink/crypteia-extension-amzn:latest AS crypteia
-FROM public.ecr.aws/lambda/nodejs:16
+FROM public.ecr.aws/lambda/nodejs:18
 COPY --from=crypteia /opt /opt
 ENV LD_PRELOAD=/opt/lib/libcrypteia.so
 ```
@@ -247,10 +247,12 @@ Our development container is based on the [vscode-remote-try-rust](https://githu
 ./bin/test-local
 ```
 
-If you want to test SSM with your AWS account, the AWS CLI is installed on the dev container. Set it up with your **test credentials** using:
+If you want to test SSM with your AWS account, the AWS CLI is installed on the dev container. Set it up with your **test credentials** using the following. These will be passed thru to various build/test containers.
 
 ```shell
-aws configure
+export AWS_ACCESS_KEY_ID=...
+export AWS_SECRET_ACCESS_KEY=...
+export AWS_REGION=...
 ```
 
 You can also develop using the Amazon Linux 2 support. This will use Docker-in-Docker to download AWS SAM and Lambda images to build cryptia using what is present (e.g. glibc) in your environment:

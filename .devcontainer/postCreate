@@ -1,4 +1,8 @@
 #!/bin/sh
 set -e
 
-mv /usr/local/php/current/ini/conf.d/xdebug.ini /usr/local/php/current/ini/conf.d/xdebug.ini.bak
+docker run \
+  --rm \
+  --privileged \
+  multiarch/qemu-user-static \
+  --reset -p yes 

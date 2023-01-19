@@ -1,39 +1,35 @@
 #!/bin/sh
 set -e
 
-BIN="crypteia-${BUILD_ARCH}"
-LIB="libcrypteia-${BUILD_ARCH}.so"
+BIN="crypteia-${BUILD_OS}${BUILD_SUFFIX}"
+LIB="libcrypteia-${BUILD_OS}${BUILD_SUFFIX}.so"
 
-rm -rf "./build/${BIN}"
-rm -rf "./build/${BIN}.zip"
-rm -rf "./build/{$LIB}"
-rm -rf "./build/libcrypteia-${BUILD_ARCH}.zip"
-rm -rf ./build/crypteia
-rm -rf ./build/crypteia*.egg-info
-rm -rf ./build/crypteia*.dist-info
-rm -rf ./build/wrapt*
+rm -rf ./build
+rm -rf ./target
 rm -rf ./python/crypteia/build
 rm -rf ./python/crypteia/src/crypteia.egg-info
 
+mkdir -p ./build ./target
+
 cargo build \
   --release \
-  --target x86_64-unknown-linux-gnu
+  --target "${BUILD_TARGET}"
 
-cp ./target/x86_64-unknown-linux-gnu/release/crypteia "./build/${BIN}"
-cp ./target/x86_64-unknown-linux-gnu/release/libcrypteia.so "./build/${LIB}"
+cp "./target/${BUILD_TARGET}/release/crypteia" "./build/${BIN}"
+cp ./target/${BUILD_TARGET}/release/libcrypteia.so "./build/${LIB}"
 
 cd ./build
 strip "$BIN"
 chmod +x "$BIN"
 zip -r "${BIN}.zip" "$BIN"
-zip -r "libcrypteia-${BUILD_ARCH}.zip" "$LIB"
+zip -r "libcrypteia-${BUILD_OS}${BUILD_SUFFIX}.zip" "$LIB"
 cd ..
 
 rm -rf ./package/opt
 mkdir -p ./package/opt/extensions
 mkdir -p ./package/opt/lib
-cp "./build/crypteia-${BUILD_ARCH}" ./package/opt/extensions/crypteia
-cp "./build/libcrypteia-${BUILD_ARCH}.so" ./package/opt/lib/libcrypteia.so
+cp "./build/crypteia-${BUILD_OS}${BUILD_SUFFIX}" ./package/opt/extensions/crypteia
+cp "./build/libcrypteia-${BUILD_OS}${BUILD_SUFFIX}.so" ./package/opt/lib/libcrypteia.so
 
 cd ./python/crypteia && pip install . --target ../../build --upgrade && cd ../..
 cp ./python/usercustomize.py ./build/

@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-echo "== [amzn/Dockerfile] bin/test =="
+echo "== [amzn/Dockerfile] sam/build bin/test =="
 docker run \
   --rm \
   --user root \
@@ -10,7 +10,10 @@ docker run \
   --env TEST_LANG=node \
   crypteia-lambda-nodejs
 
-echo "== [amzn/Dockerfile-test] bin/test =="
+echo "== [amzn/Dockerfile-test] lambda/runtime building... =="
+docker build --tag crypteia-lambda-nodejs-test --file amzn/Dockerfile-test .
+
+echo "== [amzn/Dockerfile-test] lambda/runtime bin/test =="
 docker run \
   --rm \
   --user root \

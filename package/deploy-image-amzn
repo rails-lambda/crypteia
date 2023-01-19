@@ -1,0 +1,24 @@
+#!/bin/sh
+set -e
+
+if [ -z "${CRYPTEIA_VERSION}" ]; then
+  echo "CRYPTEIA_VERSION is not set"
+  exit 1
+fi
+
+./amzn/setup
+docker build \
+  --tag "ghcr.io/customink/crypteia-extension-amzn-amd64:${CRYPTEIA_VERSION}" \
+  --file package/Dockerfile .
+docker push "ghcr.io/customink/crypteia-extension-amzn-amd64:${CRYPTEIA_VERSION}"
+
+./amzn/setup-arm64
+docker build \
+  --tag "ghcr.io/customink/crypteia-extension-amzn-arm64:${CRYPTEIA_VERSION}" \
+  --file package/Dockerfile .
+docker push "ghcr.io/customink/crypteia-extension-amzn-arm64:${CRYPTEIA_VERSION}"
+
+docker manifest create \
+  "ghcr.io/customink/crypteia-extension-amzn:${CRYPTEIA_VERSION}" \
+  --amend "ghcr.io/customink/crypteia-extension-amzn-amd64:${CRYPTEIA_VERSION}" \
+  --amend "ghcr.io/customink/crypteia-extension-amzn-arm64:${CRYPTEIA_VERSION}"
