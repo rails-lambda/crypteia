@@ -32,8 +32,8 @@ jobs:
       - uses: docker/login-action@v2
         with:
           registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          username: cink-continuous-integration
+          password: ${{ secrets.PUBLIC_GITHUB_TOKEN_PACKAGES }}
       - uses: devcontainers/ci@v0.2
         env: 
           CRYPTEIA_VERSION: ${{ github.event.inputs.version }}
@@ -52,8 +52,8 @@ jobs:
       - uses: docker/login-action@v2
         with:
           registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          username: cink-continuous-integration
+          password: ${{ secrets.PUBLIC_GITHUB_TOKEN_PACKAGES }}
       - uses: devcontainers/ci@v0.2
         env: 
           CRYPTEIA_VERSION: ${{ github.event.inputs.version }}
