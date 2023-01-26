@@ -32,7 +32,7 @@ jobs:
       - uses: devcontainers/ci@v0.2
         env: 
           CRYPTEIA_VERSION: ${{ github.event.inputs.version }}
-          DOCKER_LOGIN_PAT: ${{ secrets.PUBLIC_GITHUB_TOKEN_PACKAGES }}
+          DOCKER_LOGIN_PAT: ${{ secrets.DOCKER_LOGIN_PAT }}
         with:
           push: never
           cacheFrom: ghcr.io/customink/crypteia-ci
@@ -49,7 +49,7 @@ jobs:
       - uses: devcontainers/ci@v0.2
         env: 
           CRYPTEIA_VERSION: ${{ github.event.inputs.version }}
-          DOCKER_LOGIN_PAT: ${{ secrets.PUBLIC_GITHUB_TOKEN_PACKAGES }}
+          DOCKER_LOGIN_PAT: ${{ secrets.DOCKER_LOGIN_PAT }}
         with:
           push: never
           cacheFrom: ghcr.io/customink/crypteia-ci
