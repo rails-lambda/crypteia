@@ -6,6 +6,8 @@ if [ -z "${CRYPTEIA_VERSION}" ]; then
   exit 1
 fi
 
+echo $DOCKER_LOGIN_PAT | docker login ghcr.io -u "cink-continuous-integration" --password-stdin
+
 ./amzn/setup
 docker build \
   --tag "ghcr.io/customink/crypteia-extension-amzn-amd64:${CRYPTEIA_VERSION}" \

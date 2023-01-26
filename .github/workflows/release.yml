@@ -29,19 +29,16 @@ jobs:
     needs: image
     steps:
       - uses: actions/checkout@v3
-      - uses: docker/login-action@v2
-        with:
-          registry: ghcr.io
-          username: cink-continuous-integration
-          password: ${{ secrets.PUBLIC_GITHUB_TOKEN_PACKAGES }}
       - uses: devcontainers/ci@v0.2
         env: 
           CRYPTEIA_VERSION: ${{ github.event.inputs.version }}
+          DOCKER_LOGIN_PAT: ${{ secrets.PUBLIC_GITHUB_TOKEN_PACKAGES }}
         with:
           push: never
           cacheFrom: ghcr.io/customink/crypteia-ci
           env: |
             CRYPTEIA_VERSION
+            DOCKER_LOGIN_PAT
           runCmd: ./package/deploy-image-debian
   amzn:
     name: AmazonLinux2 x86_64/arm64
@@ -49,19 +46,16 @@ jobs:
     needs: image
     steps:
       - uses: actions/checkout@v3
-      - uses: docker/login-action@v2
-        with:
-          registry: ghcr.io
-          username: cink-continuous-integration
-          password: ${{ secrets.PUBLIC_GITHUB_TOKEN_PACKAGES }}
       - uses: devcontainers/ci@v0.2
         env: 
           CRYPTEIA_VERSION: ${{ github.event.inputs.version }}
+          DOCKER_LOGIN_PAT: ${{ secrets.PUBLIC_GITHUB_TOKEN_PACKAGES }}
         with:
           push: never
           cacheFrom: ghcr.io/customink/crypteia-ci
           env: |
             CRYPTEIA_VERSION
+            DOCKER_LOGIN_PAT
           runCmd: ./package/deploy-image-amzn
   release:
     name: Create Release
