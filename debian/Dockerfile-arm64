@@ -13,5 +13,5 @@ RUN /root/.cargo/bin/rustup update \
 RUN mkdir /var/task
 WORKDIR /var/task
 
-ENV BUILD_OS=debian
-ENV BUILD_TARGET=aarch64-unknown-linux-gnu
+ENV CRYPTEIA_BUILD_OS=debian
+ENV CRYPTEIA_BUILD_TARGET=aarch64-unknown-linux-gnu

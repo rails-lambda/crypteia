@@ -15,7 +15,7 @@ RUN curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output get-pip.py \
 
 COPY ./package/opt /opt
 
-ENV BUILD_OS=debian
+ENV CRYPTEIA_BUILD_OS=debian
 ENV SKIP_CARGO_TEST=1
 
 ENV EXISTING=existingvalue

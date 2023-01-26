@@ -3,7 +3,7 @@ FROM public.ecr.aws/lambda/nodejs:18
 COPY build/crypteia-amzn /opt/extensions/crypteia
 COPY build/libcrypteia-amzn.so /opt/lib/libcrypteia.so
 
-ENV BUILD_OS=amzn
+ENV CRYPTEIA_BUILD_OS=amzn
 ENV SKIP_CARGO_TEST=1
 
 ENV EXISTING=existingvalue

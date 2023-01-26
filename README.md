@@ -76,6 +76,9 @@ When building your own Lambda Containers, use both the `crypteia` binary and `li
 - Amazon Linux 2: uses the `-amzn` suffix.
 - Debian, Ubuntu, etc.: uses the `-debian` suffix.
 
+> **Note**
+> 🦾 All of our images are multi-platform supporting both `amd64` and `arm64` for linux. We use Docker manifests and there is no need to use special tags.
+
 ⚠️ For now our project supports the `x86_64` architecture, but we plan to release `arm64` variants soon. Follow or contribute in our [GitHub Issues](https://github.com/customink/crypteia/issues/5) which tracks this topic.
 
 #### Lambda Containers
@@ -105,7 +108,8 @@ If you are using Python you will need to add our Crypteia python package to the 
 ENV PYTHONPATH=/opt/crypteia/python
 ```
 
-⚠️ When building your own Lambda Containers, please make sure [glibc](https://www.gnu.org/software/libc/) is installed since this is used by [redhook](https://github.com/geofft/redhook).
+> **Warning**
+> When building your own Lambda Containers, please make sure [glibc](https://www.gnu.org/software/libc/) is installed since this is used by [redhook](https://github.com/geofft/redhook).
 
 #### Lambda Extension
 
