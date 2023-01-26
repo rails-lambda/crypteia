@@ -76,6 +76,9 @@ When building your own Lambda Containers, use both the `crypteia` binary and `li
 - Amazon Linux 2: uses the `-amzn` suffix.
 - Debian, Ubuntu, etc.: uses the `-debian` suffix.
 
+> **Note**
+> 🦾 All of our images are multi-platform supporting both `amd64` and `arm64` for linux. We use Docker manifests and there is no need to use special tags.
+
 ⚠️ For now our project supports the `x86_64` architecture, but we plan to release `arm64` variants soon. Follow or contribute in our [GitHub Issues](https://github.com/customink/crypteia/issues/5) which tracks this topic.
 
 #### Lambda Containers
@@ -84,7 +87,7 @@ There are two options for Lambda containers. The easiest is to use Docker's mult
 
 ```dockerfile
 FROM ghcr.io/customink/crypteia-extension-amzn:latest AS crypteia
-FROM public.ecr.aws/lambda/nodejs:16
+FROM public.ecr.aws/lambda/nodejs:18
 COPY --from=crypteia /opt /opt
 ENV LD_PRELOAD=/opt/lib/libcrypteia.so
 ```
@@ -105,7 +108,8 @@ If you are using Python you will need to add our Crypteia python package to the 
 ENV PYTHONPATH=/opt/crypteia/python
 ```
 
-⚠️ When building your own Lambda Containers, please make sure [glibc](https://www.gnu.org/software/libc/) is installed since this is used by [redhook](https://github.com/geofft/redhook).
+> **Warning**
+> When building your own Lambda Containers, please make sure [glibc](https://www.gnu.org/software/libc/) is installed since this is used by [redhook](https://github.com/geofft/redhook).
 
 #### Lambda Extension
 
@@ -247,10 +251,12 @@ Our development container is based on the [vscode-remote-try-rust](https://githu
 ./bin/test-local
 ```
 
-If you want to test SSM with your AWS account, the AWS CLI is installed on the dev container. Set it up with your **test credentials** using:
+If you want to test SSM with your AWS account, the AWS CLI is installed on the dev container. Set it up with your **test credentials** using the following. These will be passed thru to various build/test containers.
 
 ```shell
-aws configure
+export AWS_ACCESS_KEY_ID=...
+export AWS_SECRET_ACCESS_KEY=...
+export AWS_REGION=...
 ```
 
 You can also develop using the Amazon Linux 2 support. This will use Docker-in-Docker to download AWS SAM and Lambda images to build cryptia using what is present (e.g. glibc) in your environment:

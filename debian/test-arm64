@@ -1,0 +1,12 @@
+#!/bin/sh
+set -e
+
+echo "== [debian/Dockerfile-arm64] bin/test =="
+docker run \
+  --rm \
+  --user root \
+  --entrypoint "./test/libcrypteia.sh" \
+  --volume "${PWD}:/var/task" \
+  --env TEST_LANG=node \
+  --platform=linux/arm64 \
+  crypteia-debian-nodejs-arm64

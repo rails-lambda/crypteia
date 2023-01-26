@@ -1,0 +1,14 @@
+#!/bin/sh
+set -e
+
+echo "== [debian/Dockerfile-arm64] building... =="
+docker build --platform=linux/arm64 --tag crypteia-debian-nodejs-arm64 --file debian/Dockerfile-arm64 .
+
+echo "== [debian/Dockerfile-arm64] bin/setup =="
+docker run \
+  --rm \
+  --user root \
+  --entrypoint "./bin/setup" \
+  --volume "${PWD}:/var/task" \
+  --platform=linux/arm64 \
+  crypteia-debian-nodejs-arm64

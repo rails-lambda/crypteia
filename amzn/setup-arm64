@@ -1,0 +1,14 @@
+#!/bin/sh
+set -e
+
+echo "== [amzn/Dockerfile-arm64] sam/build building... =="
+docker build --tag crypteia-lambda-nodejs-arm64 --file amzn/Dockerfile-arm64 .
+
+echo "== [amzn/Dockerfile-arm64] sam/build bin/setup =="
+docker run \
+  --rm \
+  --user root \
+  --entrypoint "./bin/setup" \
+  --volume "${PWD}:/var/task" \
+  --platform=linux/arm64 \
+  crypteia-lambda-nodejs-arm64

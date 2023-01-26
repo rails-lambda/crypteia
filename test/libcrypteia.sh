@@ -2,10 +2,16 @@
 set -e
 . ./test/assert.sh
 
+# Sync with bin/build, bin/test, & test/libcrypteia.sh.
+export CRYPTEIA_BUILD_OS="${CRYPTEIA_BUILD_OS:=debian}"
+export CRYPTEIA_BUILD_TARGET="${CRYPTEIA_BUILD_TARGET:=x86_64-unknown-linux-gnu}"
+if [ "${CRYPTEIA_BUILD_TARGET}" = "aarch64-unknown-linux-gnu" ]; then
+  export CRYPTEIA_BUILD_SUFFIX="-arm64"
+fi
+
 export CRYPTEIA_ENV_FILE="/tmp/crypteia.json"
-export BUILD_ARCH="${BUILD_ARCH:=debian}"
 export TEST_LANG="${TEST_LANG:=node}"
-export LD_PRELOAD="${LD_PRELOAD:=$PWD/build/libcrypteia-${BUILD_ARCH}.so}"
+export LD_PRELOAD="${LD_PRELOAD:=$PWD/build/libcrypteia-${CRYPTEIA_BUILD_OS}${CRYPTEIA_BUILD_SUFFIX}.so}"
 export PYTHONPATH="${PYTHONPATH:=$PWD/package/opt/crypteia/python}"
 
 echo "============================="

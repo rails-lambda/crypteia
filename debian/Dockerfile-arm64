@@ -1,0 +1,17 @@
+FROM mcr.microsoft.com/devcontainers/typescript-node:18
+
+RUN apt update && apt-get install -y python3-pip
+RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1
+RUN update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1
+
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+ENV PATH="/root/.cargo/bin:${PATH}"
+
+RUN /root/.cargo/bin/rustup update \
+    && /root/.cargo/bin/rustup target add aarch64-unknown-linux-gnu
+
+RUN mkdir /var/task
+WORKDIR /var/task
+
+ENV CRYPTEIA_BUILD_OS=debian
+ENV CRYPTEIA_BUILD_TARGET=aarch64-unknown-linux-gnu

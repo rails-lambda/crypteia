@@ -1,11 +1,20 @@
 #!/bin/sh
 set -e
 
-if [ ! "${SKIP_CARGO_TEST}" = "1" ]; then
-  cargo test
+# Sync with bin/build, bin/test, & test/libcrypteia.sh.
+export CRYPTEIA_BUILD_OS="${CRYPTEIA_BUILD_OS:=debian}"
+export CRYPTEIA_BUILD_TARGET="${CRYPTEIA_BUILD_TARGET:=x86_64-unknown-linux-gnu}"
+if [ "${CRYPTEIA_BUILD_TARGET}" = "aarch64-unknown-linux-gnu" ]; then
+  export CRYPTEIA_BUILD_SUFFIX="-arm64"
 fi
 
-TEST_LANG=node ./test/libcrypteia.sh 
-TEST_LANG=ruby ./test/libcrypteia.sh 
-TEST_LANG=php ./test/libcrypteia.sh 
-TEST_LANG=python ./test/libcrypteia.sh
+if [ ! "${SKIP_CARGO_TEST}" = "1" ]; then
+  cargo test --target "${CRYPTEIA_BUILD_TARGET}" --quiet
+fi
+
+if [ ! "${CRYPTEIA_BUILD_TARGET}" = "aarch64-unknown-linux-gnu" ]; then
+  TEST_LANG=node ./test/libcrypteia.sh 
+  TEST_LANG=ruby ./test/libcrypteia.sh 
+  TEST_LANG=php ./test/libcrypteia.sh 
+  TEST_LANG=python ./test/libcrypteia.sh
+fi
