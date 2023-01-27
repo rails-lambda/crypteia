@@ -9,12 +9,14 @@ fi
 docker login ghcr.io -u "cink-continuous-integration" -p $DOCKER_LOGIN_PAT
 
 ./amzn/setup
+
 docker build \
   --tag "ghcr.io/customink/crypteia-extension-amzn-amd64:${CRYPTEIA_VERSION}" \
   --file package/Dockerfile .
 docker push "ghcr.io/customink/crypteia-extension-amzn-amd64:${CRYPTEIA_VERSION}"
 
 ./amzn/setup-arm64
+
 docker build \
   --tag "ghcr.io/customink/crypteia-extension-amzn-arm64:${CRYPTEIA_VERSION}" \
   --file package/Dockerfile .
@@ -24,3 +26,5 @@ docker manifest create \
   "ghcr.io/customink/crypteia-extension-amzn:${CRYPTEIA_VERSION}" \
   --amend "ghcr.io/customink/crypteia-extension-amzn-amd64:${CRYPTEIA_VERSION}" \
   --amend "ghcr.io/customink/crypteia-extension-amzn-arm64:${CRYPTEIA_VERSION}"
+
+docker manifest push "ghcr.io/customink/crypteia-extension-amzn:${CRYPTEIA_VERSION}"
