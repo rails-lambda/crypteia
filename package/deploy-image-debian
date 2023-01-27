@@ -24,5 +24,3 @@ docker manifest create \
   "ghcr.io/customink/crypteia-extension-debian:${CRYPTEIA_VERSION}" \
   --amend "ghcr.io/customink/crypteia-extension-debian-amd64:${CRYPTEIA_VERSION}" \
   --amend "ghcr.io/customink/crypteia-extension-debian-arm64:${CRYPTEIA_VERSION}"
-
-DOCKER_LOGIN_PAT: ${{ secrets.PUBLIC_GITHUB_TOKEN_PACKAGES }}
