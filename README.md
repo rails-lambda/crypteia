@@ -79,8 +79,6 @@ When building your own Lambda Containers, use both the `crypteia` binary and `li
 > **Note**
 > 🦾 All of our images are multi-platform supporting both `amd64` and `arm64` for linux. We use Docker manifests and there is no need to use special tags.
 
-⚠️ For now our project supports the `x86_64` architecture, but we plan to release `arm64` variants soon. Follow or contribute in our [GitHub Issues](https://github.com/customink/crypteia/issues/5) which tracks this topic.
-
 #### Lambda Containers
 
 There are two options for Lambda containers. The easiest is to use Docker's multi stage builds with our [Extension Containers]([https://github.com/orgs/customink/packages?ecosystem=container&tab=packages&ecosystem=container&q=extension](https://github.com/orgs/customink/packages?repo_name=crypteia&q=extension)) to copy the `/opt` directory matching your platform and Crypteia version number. example below. Remember to use `-debian` vs `-amzn` if you are using your own Linux containers. Or change the version number depending on your needs.
