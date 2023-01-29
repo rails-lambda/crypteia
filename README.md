@@ -218,7 +218,7 @@ Policies:
 ```
 
 > **Note**
-> If you are not using default encryption key, you will also need to add a [KMSDecryptPolicy](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-policy-template-list.html#kms-decrypt-policy) policy.
+> If you are not using the default encryption key, you will also need to add a [KMSDecryptPolicy](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-policy-template-list.html#kms-decrypt-policy) policy.
 
 
 #### Troubleshooting
