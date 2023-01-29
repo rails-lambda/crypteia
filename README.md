@@ -191,31 +191,35 @@ Shown below is a simple Node.js 16 function which has the appropriate [IAM Permi
 
 #### IAM Permissions
 
-Please refer to the AWS guide on [Restricting access to Systems Manager parameters using IAM policies](https://docs.aws.amazon.com/systems-manager/latest/userguide/sysman-paramstore-access.html) for details on which policies your function's IAM Role will need. For an appliction to pull both single parameters as well as bulk paths, I have found the following policy helpful; it assumes the `/myapp` prefix and uses the AWS default KMS encryption key:
+Please refer to the AWS guide on [Restricting access to Systems Manager parameters using IAM policies](https://docs.aws.amazon.com/systems-manager/latest/userguide/sysman-paramstore-access.html) for details on which policies your function's IAM Role will need. These examples assume the `/myapp` prefix and should work for direct secrets in that path or further nesting in a path prefix as described in the [usage section](#usage).
 
 ```json
 {
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Action": [
-        "ssm:GetParameter",
-        "ssm:GetParametersByPath",
-        "ssm:GetParameters",
-        "ssm:GetParameterHistory",
-        "ssm:DescribeParameters"
-      ],
-      "Resource": "arn:aws:ssm:us-east-1:123456789012:parameter/myapp*",
-      "Effect": "Allow"
-    },
-    {
-      "Action": "kms:Decrypt",
-      "Resource": "arn:aws:kms:us-east-1:123456789012:key/4914ec06-e888-4ea5-a371-5b88eEXAMPLE",
-      "Effect": "Allow"
+      "Effect": "Allow",
+      "Action": ["ssm:Get*", "ssm:Describe*"],
+      "Resource": "arn:aws:ssm:*:${AWS::AccountId}:parameter/myapp/*"
     }
   ]
 }
 ```
+
+Here is an example [Policies](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-function.html#sam-function-policies) section you could add to your AWS SAM `template.yaml` file.
+
+```yaml
+Policies:
+  - Statement:
+    - Effect: Allow
+      Action: ["ssm:Get*", "ssm:Describe*"]
+      Resource:
+        - !Sub arn:aws:ssm:*:${AWS::AccountId}:parameter/myapp/*
+```
+
+> **Note**
+> If you are not using default encryption key, you will also need to add a [KMSDecryptPolicy](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-policy-template-list.html#kms-decrypt-policy) policy.
+
 
 #### Troubleshooting
 
