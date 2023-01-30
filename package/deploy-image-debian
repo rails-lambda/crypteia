@@ -11,6 +11,7 @@ docker login ghcr.io -u "cink-continuous-integration" -p $DOCKER_LOGIN_PAT
 ./bin/setup
 
 docker build \
+  --platform linux/amd64 \
   --tag "ghcr.io/customink/crypteia-extension-debian-amd64:${CRYPTEIA_VERSION}" \
   --file package/Dockerfile .
 docker push "ghcr.io/customink/crypteia-extension-debian-amd64:${CRYPTEIA_VERSION}"
@@ -18,6 +19,7 @@ docker push "ghcr.io/customink/crypteia-extension-debian-amd64:${CRYPTEIA_VERSIO
 ./debian/setup-arm64
 
 docker build \
+  --platform linux/arm64 \
   --tag "ghcr.io/customink/crypteia-extension-debian-arm64:${CRYPTEIA_VERSION}" \
   --file package/Dockerfile .
 docker push "ghcr.io/customink/crypteia-extension-debian-arm64:${CRYPTEIA_VERSION}"
