@@ -111,11 +111,23 @@ ENV PYTHONPATH=/opt/crypteia/python
 
 #### Lambda Extension
 
-Our Amazon Linux 2 files can be used within a [Lambda Extension](https://docs.aws.amazon.com/lambda/latest/dg/using-extensions.html) that you can deploy to your own AWS account as a [Lambda Layer](https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html). You can use this project to build, publish, and deploy that layer since it has the SAM CLI installed. All you need to do is supply your own S3 bucket. For example:
+Our Amazon Linux 2 files can be used within a [Lambda Extension](https://docs.aws.amazon.com/lambda/latest/dg/using-extensions.html) that you can deploy to your own AWS account as a [Lambda Layer](https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html). You can use this project to build, publish, and deploy that layer since it has the SAM CLI installed. All you need to do is supply your own S3 bucket. The process differ slightly for `arm64`, but for both, open up the [development container](#development) and start off by configuring the AWS CLI to access the account needed.
 
 ```shell
 aws configure
+```
+
+The `package/template.yml` file has a the layer's [CompatibleArchitectures](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-layerversion.html) set to `x86_64`. So these commands work without changes.
+
+```shell
 ./amzn/setup
+S3_BUCKET_NAME=my-bucket ./package/deploy
+```
+
+However, for `arm64` the process would be a little different. First open the `package/template.yml` and change the `CompatibleArchitectures` value from `x86_64` to `arm64`. Now run the following commands to publish the lambda layer. Optionally, if you want to create distinct layer names for each arch, feel free open up the `package/deploy` file and change the `--stack-name` as you see fit.
+
+```shell
+./amzn/setup-arm64
 S3_BUCKET_NAME=my-bucket ./package/deploy
 ```
 
