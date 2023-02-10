@@ -31,15 +31,15 @@ jobs:
       - uses: actions/checkout@v3
       - uses: devcontainers/ci@v0.2
         env: 
-          CRYPTEIA_VERSION: ${{ github.event.inputs.version }}
           DOCKER_LOGIN_PAT: ${{ secrets.DOCKER_LOGIN_PAT }}
         with:
           push: never
           cacheFrom: ghcr.io/customink/crypteia-ci
           env: |
-            CRYPTEIA_VERSION
             DOCKER_LOGIN_PAT
-          runCmd: ./package/deploy-image-debian
+          runCmd: |
+            CRYPTEIA_VERSION=${{ github.event.inputs.version }} ./package/deploy-image-debian
+            CRYPTEIA_VERSION=latest ./package/deploy-image-debian
   amzn:
     name: AmazonLinux2 x86_64/arm64
     runs-on: ubuntu-20.04
@@ -48,15 +48,15 @@ jobs:
       - uses: actions/checkout@v3
       - uses: devcontainers/ci@v0.2
         env: 
-          CRYPTEIA_VERSION: ${{ github.event.inputs.version }}
           DOCKER_LOGIN_PAT: ${{ secrets.DOCKER_LOGIN_PAT }}
         with:
           push: never
           cacheFrom: ghcr.io/customink/crypteia-ci
           env: |
-            CRYPTEIA_VERSION
             DOCKER_LOGIN_PAT
-          runCmd: ./package/deploy-image-amzn
+          runCmd: |
+            CRYPTEIA_VERSION=${{ github.event.inputs.version }} ./package/deploy-image-amzn
+            CRYPTEIA_VERSION=latest ./package/deploy-image-amzn
   release:
     name: Create Release
     runs-on: ubuntu-20.04

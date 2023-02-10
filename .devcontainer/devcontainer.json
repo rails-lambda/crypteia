@@ -5,7 +5,7 @@
   },
   "features": {
     "ghcr.io/devcontainers/features/aws-cli:latest": {},
-    "ghcr.io/devcontainers/features/ruby:latest": {},
+    "ghcr.io/devcontainers/features/ruby:1": {},
     "ghcr.io/devcontainers/features/node:latest": {},
     "ghcr.io/shyim/devcontainers-features/php:latest": {
       "installComposer": false
