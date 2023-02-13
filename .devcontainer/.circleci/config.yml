@@ -1,0 +1,77 @@
+default-machine: &default-machine
+  machine:
+    image: ubuntu-2204:current
+    docker_layer_caching: true
+  resource_class: large
+version: 2.1
+parameters:
+  workflow:
+    type: enum
+    default: test
+    description: The workflow to trigger.
+    enum: [test, deploy]
+commands:
+  devcontainer-install:
+    steps:
+      - run: npm install -g @devcontainers/cli
+  devcontainer-build:
+    steps:
+      - run: devcontainer build --workspace-folder .
+  devcontainer-up:
+    steps:
+      - run: devcontainer up --workspace-folder .
+      - run: devcontainer run-user-commands --workspace-folder .
+  devcontainer-run:
+    parameters:
+      cmd: { type: string }
+      args: { type: string, default: "" }
+      options: { type: string, default: "" }
+    steps:
+      - run: >
+          devcontainer exec 
+          --workspace-folder . 
+          << parameters.options >> 
+          << parameters.cmd >> 
+          << parameters.args >>
+jobs:
+  devcontainer:
+    <<: *default-machine
+    steps:
+      - checkout
+      - devcontainer-install
+      - devcontainer-build
+  test-job:
+    <<: *default-machine
+    steps:
+      - checkout
+      - devcontainer-install
+      - devcontainer-up
+      - devcontainer-run: { cmd: ./bin/setup }
+      - devcontainer-run: { cmd: ./bin/test }
+  deploy-job:
+    <<: *default-machine
+    steps:
+      - checkout
+      - devcontainer-install
+      - devcontainer-up
+      - devcontainer-run:
+          options: >-
+            --remote-env AWS_REGION=us-east-1
+            --remote-env AWS_DEFAULT_REGION=us-east-1
+            --remote-env AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+            --remote-env AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+          cmd: ./bin/deploy
+workflows:
+  test:
+    when: { equal: [ test, << pipeline.parameters.workflow >> ] }
+    jobs:
+      - devcontainer
+      - test-job:
+          requires: [devcontainer]
+  deploy:
+    when: { equal: [ deploy, << pipeline.parameters.workflow >> ] }
+    jobs:
+      - devcontainer
+      - deploy-job:
+          requires: [devcontainer]
+  
