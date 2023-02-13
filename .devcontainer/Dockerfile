@@ -7,13 +7,17 @@ RUN sudo apt-get update -y \
 RUN rustup update \
     && rustup target add aarch64-unknown-linux-gnu
 
+# x86_64 to arm64 support.
 RUN sudo apt-get install -y \
     qemu \
     binfmt-support \
     qemu-user-static
 
-RUN cd /tmp \
-    && curl -L https://github.com/aws/aws-sam-cli/releases/latest/download/aws-sam-cli-linux-x86_64.zip > aws-sam-cli-linux-x86_64.zip \
-    && unzip aws-sam-cli-linux-x86_64.zip -d sam-installation \
-    && rm -rf aws-sam-cli-linux-x86_64.zip \
-    && sudo ./sam-installation/install
+# Easy way to install node, ruby, and php
+RUN apt-get -y install nodejs ruby php php-common
+
+# Easy way to install Python.
+RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1
+
+# Multi-platform SAM CLI. https://github.com/aws/aws-sam-cli/issues/3908
+RUN apt-get install -y pip && pip install aws-sam-cli
