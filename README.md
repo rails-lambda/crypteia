@@ -1,4 +1,4 @@
-[![Actions Status](https://github.com/customink/crypteia/actions/workflows/test.yml/badge.svg)](https://github.com/customink/crypteia/actions/workflows/test.yml)
+[![Actions Status](https://github.com/rails-lambda/crypteia/actions/workflows/test.yml/badge.svg)](https://github.com/rails-lambda/crypteia/actions/workflows/test.yml)
 
 # 🛡 Crypteia
 
@@ -81,16 +81,16 @@ When building your own Lambda Containers, use both the `crypteia` binary and `li
 
 #### Lambda Containers
 
-There are two options for Lambda containers. The easiest is to use Docker's multi stage builds with our [Extension Containers]([https://github.com/orgs/customink/packages?ecosystem=container&tab=packages&ecosystem=container&q=extension](https://github.com/orgs/customink/packages?repo_name=crypteia&q=extension)) to copy the `/opt` directory matching your platform and Crypteia version number. example below. Remember to use `-debian` vs `-amzn` if you are using your own Linux containers. Or change the version number depending on your needs.
+There are two options for Lambda containers. The easiest is to use Docker's multi stage builds with our [Extension Containers]([https://github.com/orgs/rails-lambda/packages?ecosystem=container&tab=packages&ecosystem=container&q=extension](https://github.com/orgs/rails-lambda/packages?repo_name=crypteia&q=extension)) to copy the `/opt` directory matching your platform and Crypteia version number. example below. Remember to use `-debian` vs `-amzn` if you are using your own Linux containers. Or change the version number depending on your needs.
 
 ```dockerfile
-FROM ghcr.io/customink/crypteia-extension-amzn:latest AS crypteia
+FROM ghcr.io/rails-lambda/crypteia-extension-amzn:latest AS crypteia
 FROM public.ecr.aws/lambda/nodejs:18
 COPY --from=crypteia /opt /opt
 ENV LD_PRELOAD=/opt/lib/libcrypteia.so
 ```
 
-Alternatively, you can download your platform's binary and shared object file from our [Releases](https://github.com/customink/crypteia/releases) page and place them into your projects Docker build directory. Remember to remove the platform file suffix. Example:
+Alternatively, you can download your platform's binary and shared object file from our [Releases](https://github.com/rails-lambda/crypteia/releases) page and place them into your projects Docker build directory. Remember to remove the platform file suffix. Example:
 
 ```dockerfile
 RUN mkdir -p /opt/lib
@@ -136,7 +136,7 @@ S3_BUCKET_NAME=my-bucket ./package/deploy
 If you are using Crypteia on your own Docker containers without the Lambda Extension mechanics, you can simply set the `ENTRYPOINT` to the Crypteia binary which fetches your environment variables so the shared object preload can use them.
 
 ```dockerfile
-FROM ghcr.io/customink/crypteia-extension-amzn:latest AS crypteia
+FROM ghcr.io/rails-lambda/crypteia-extension-amzn:latest AS crypteia
 FROM ubuntu
 COPY --from=crypteia /opt /opt
 ENV LD_PRELOAD=/opt/lib/libcrypteia.so

@@ -20,8 +20,8 @@ jobs:
       - uses: devcontainers/ci@v0.2
         with:
           push: always
-          imageName: ghcr.io/customink/crypteia-ci
-          cacheFrom: ghcr.io/customink/crypteia-ci
+          imageName: ghcr.io/rails-lambda/crypteia-ci
+          cacheFrom: ghcr.io/rails-lambda/crypteia-ci
           runCmd: echo DONE!
   debian:
     name: Debian x86_64/arm64
@@ -34,7 +34,7 @@ jobs:
           DOCKER_LOGIN_PAT: ${{ secrets.DOCKER_LOGIN_PAT }}
         with:
           push: never
-          cacheFrom: ghcr.io/customink/crypteia-ci
+          cacheFrom: ghcr.io/rails-lambda/crypteia-ci
           env: |
             DOCKER_LOGIN_PAT
           runCmd: |
@@ -50,7 +50,7 @@ jobs:
           DOCKER_LOGIN_PAT: ${{ secrets.DOCKER_LOGIN_PAT }}
         with:
           push: never
-          cacheFrom: ghcr.io/customink/crypteia-ci
+          cacheFrom: ghcr.io/rails-lambda/crypteia-ci
           env: |
             DOCKER_LOGIN_PAT
           runCmd: |
