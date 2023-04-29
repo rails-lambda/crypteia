@@ -31,7 +31,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: devcontainers/ci@v0.2
         env:
-          DOCKER_LOGIN_PAT: ${{ secrets.DOCKER_LOGIN_PAT }}
+          DOCKER_LOGIN_PAT: ${{ secrets.GITHUB_TOKEN }}
         with:
           push: never
           cacheFrom: ghcr.io/rails-lambda/crypteia-ci
@@ -47,7 +47,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: devcontainers/ci@v0.2
         env:
-          DOCKER_LOGIN_PAT: ${{ secrets.DOCKER_LOGIN_PAT }}
+          DOCKER_LOGIN_PAT: ${{ secrets.GITHUB_TOKEN }}
         with:
           push: never
           cacheFrom: ghcr.io/rails-lambda/crypteia-ci

@@ -24,26 +24,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Configure AWS
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
       - name: Test
         uses: devcontainers/ci@v0.2
         with:
           push: never
           cacheFrom: ghcr.io/rails-lambda/crypteia-ci
-          env: |
-            AWS_ACCESS_KEY_ID
-            AWS_SECRET_ACCESS_KEY
-            AWS_SESSION_TOKEN
-            AWS_DEFAULT_REGION
-            AWS_REGION
           runCmd: |
             ./bin/setup
-            ./bin/test
+            ./bin/test-local
   debian-arm64:
     name: Debian arm64
     runs-on: ubuntu-20.04
