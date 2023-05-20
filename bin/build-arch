@@ -13,7 +13,8 @@ mkdir -p ./build ./target
 
 cargo build \
   --release \
-  --target "${CRYPTEIA_BUILD_TARGET}"
+  --target "${CRYPTEIA_BUILD_TARGET}" \
+  -Z sparse-registry
 
 cp "./target/${CRYPTEIA_BUILD_TARGET}/release/crypteia" "./build/${BIN}"
 cp ./target/${CRYPTEIA_BUILD_TARGET}/release/libcrypteia.so "./build/${LIB}"
