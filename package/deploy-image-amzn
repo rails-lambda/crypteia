@@ -35,10 +35,10 @@ docker push "${BASE_NAME_ARM64}:${CRYPTEIA_VERSION}"
 docker push "${BASE_NAME_ARM64}:latest"
 
 docker manifest create \
-  "ghcr.io/rails-lambda/crypteia-extension-amzn:${CRYPTEIA_VERSION}" \
-  --amend "${BASE_NAME_AMD64}:${CRYPTEIA_VERSION}" \
-  --amend "${BASE_NAME_ARM64}:${CRYPTEIA_VERSION}"
-docker manifest push "ghcr.io/rails-lambda/crypteia-extension-amzn:${CRYPTEIA_VERSION}"
+  "ghcr.io/rails-lambda/crypteia-extension-amzn:${CRYPTEIA_VERSION_MAJOR}" \
+  --amend "${BASE_NAME_AMD64}:${CRYPTEIA_VERSION_MAJOR}" \
+  --amend "${BASE_NAME_ARM64}:${CRYPTEIA_VERSION_MAJOR}"
+docker manifest push "ghcr.io/rails-lambda/crypteia-extension-amzn:${CRYPTEIA_VERSION_MAJOR}"
 
 docker manifest create \
   "ghcr.io/rails-lambda/crypteia-extension-amzn:${CRYPTEIA_VERSION}" \
