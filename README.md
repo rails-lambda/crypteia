@@ -203,7 +203,7 @@ Shown below is a simple Node.js 16 function which has the appropriate [IAM Permi
 
 #### Scope variables to a specific environment
 Your `template.yaml` file can contain a variable that indicates the environment of the app. You can use this variable to fetch the correct env variable in SSM depending on the environment you are deploying your app to.
-For exemple, a [Lamby app](https://lamby.cloud/docs/quick-start) has a `RailsEnv`variable in the `template.yaml` file that indicates the environment you are deploying the app:
+For exemple, a [Lamby app](https://lamby.cloud/docs/quick-start) has a `RailsEnv` variable in the `template.yaml` file that indicates the environment you are deploying the app:
 ```yaml
 Parameters:
 
