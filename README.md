@@ -201,6 +201,29 @@ Shown below is a simple Node.js 16 function which has the appropriate [IAM Permi
 
 ![Screenshot of Code source in the AWS Lambda Console showing the `body` results of `1A2B3C4D5E6F` which is resolved from SSM Parameter Store.](/images/readme-code-results.png)
 
+#### Scope variables to a specific environment
+Your `template.yaml` file can contain a variable that indicates the environment of the app. You can use this variable to fetch the correct env variable in SSM depending on the environment you are deploying your app to.
+For exemple, a [Lamby app](https://lamby.cloud/docs/quick-start) has a `RailsEnv` variable in the `template.yaml` file that indicates the environment you are deploying the app:
+```yaml
+Parameters:
+
+  RailsEnv:
+    Type: String
+    Default: staging
+    AllowedValues:
+      - staging
+      - production
+```
+This variable can be used to get SSM variables that follow this path: `/myapp/${RailsEnv}/MY_VARIABLE`. The `template.yaml` file will then look like this:
+```yaml
+Environment:
+  Variables:
+    SECRET: x-crypteia-ssm:/myapp/${RailsEnv}/SECRET
+    ACCESS_KEY: x-crypteia-ssm:/myapp/${RailsEnv}/access-key
+    X_CRYPTEIA_SSM: x-crypteia-ssm-path:/myapp/${RailsEnv}/envs
+```
+This way you can have one different SSM variable for each one of your environments.
+
 #### IAM Permissions
 
 Please refer to the AWS guide on [Restricting access to Systems Manager parameters using IAM policies](https://docs.aws.amazon.com/systems-manager/latest/userguide/sysman-paramstore-access.html) for details on which policies your function's IAM Role will need. These examples assume the `/myapp` prefix and should work for direct secrets in that path or further nesting in a path prefix as described in the [usage section](#usage).
