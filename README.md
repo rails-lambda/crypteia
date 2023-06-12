@@ -201,12 +201,12 @@ Shown below is a simple Node.js 16 function which has the appropriate [IAM Permi
 
 ![Screenshot of Code source in the AWS Lambda Console showing the `body` results of `1A2B3C4D5E6F` which is resolved from SSM Parameter Store.](/images/readme-code-results.png)
 
-#### Scope variables to a specific environment
-Your `template.yaml` file can contain a variable that indicates the environment of the app. You can use this variable to fetch the correct env variable in SSM depending on the environment you are deploying your app to.
-For exemple, a [Lamby app](https://lamby.cloud/docs/quick-start) has a `RailsEnv` variable in the `template.yaml` file that indicates the environment you are deploying the app:
+#### Using Dynamic SSM Paths
+
+Your `template.yaml` file can contain input `Parameters` that indicates the environment of the app. You can use this parameter to fetch the correct env variable in SSM depending on the environment you are deploying your app to. For exemple, a [Lamby app](https://lamby.cloud/docs/quick-start) has a `RailsEnv` parameter which is commonly set to to indicate the environment you running under:
+
 ```yaml
 Parameters:
-
   RailsEnv:
     Type: String
     Default: staging
@@ -214,7 +214,9 @@ Parameters:
       - staging
       - production
 ```
-This variable can be used to get SSM variables that follow this path: `/myapp/${RailsEnv}/MY_VARIABLE`. The `template.yaml` file will then look like this:
+
+This parameter can be used to fetch SSM-backed environment variables that leveage dynamic paths like `/myapp/${RailsEnv}/MY_VARIABLE`. The `template.yaml` file will then look like this example below. This way you can have one different SSM variable for each one of your environments in a single AWS account.
+
 ```yaml
 Environment:
   Variables:
@@ -222,7 +224,6 @@ Environment:
     ACCESS_KEY: x-crypteia-ssm:/myapp/${RailsEnv}/access-key
     X_CRYPTEIA_SSM: x-crypteia-ssm-path:/myapp/${RailsEnv}/envs
 ```
-This way you can have one different SSM variable for each one of your environments.
 
 #### IAM Permissions
 
