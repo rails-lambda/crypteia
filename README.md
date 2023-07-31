@@ -154,16 +154,18 @@ First, you will need your secret environment variables setup in [AWS Systems Man
 
 Crypteia supports two methods to fetch SSM parameters:
 
-1. `x-crypteia-ssm:` - Single path for a single environment variable.
-2. `x-crypteia-ssm-path:` - Path prefix to fetch many environment variables.
+1. `x-crypteia-ssm:` - [Single] path for a single environment variable.
+2. `x-crypteia-ssm-path:` - [Group] Path prefix to fetch many environment variables.
 
 Using whatever serverless framework you prefer, and set up your function's environment variables using either of the two SSM interfaces from above. For example, here is an environment variables section for an [AWS SAM](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-getting-started.html) template that demonstrates all of Crypteia's features.
 
 ```yaml
 Environment:
   Variables:
+    # [Single] Example
     SECRET: x-crypteia-ssm:/myapp/SECRET
     ACCESS_KEY: x-crypteia-ssm:/myapp/access-key
+    # [Group] Example
     X_CRYPTEIA_SSM: x-crypteia-ssm-path:/myapp/envs
     DB_URL: x-crypteia
     NR_KEY: x-crypteia
