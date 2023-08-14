@@ -8,7 +8,7 @@ fi
 
 CRYPTEIA_VERSION_MAJOR=$(echo "${CRYPTEIA_VERSION}" | cut -d. -f1)
 
-docker login ghcr.io -u "cink-continuous-integration" -p $DOCKER_LOGIN_PAT
+docker login ghcr.io -u "metaskills" -p $DOCKER_LOGIN_PAT
 
 ./amzn/setup
 BASE_NAME_AMD64="ghcr.io/rails-lambda/crypteia-extension-amzn-amd64"
