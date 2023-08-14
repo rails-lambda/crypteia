@@ -63,8 +63,8 @@ async fn ssm_get_parameter(
                 "error",
                 true,
                 Some(format!(
-                    "Error calling ssm:GetParameter. Environment variable: {} Path: {} Error: {}",
-                    name, path, error
+                    "Error calling ssm:GetParameter. Environment variable: {} Path: {} Error: {:?}",
+                    name, path, error.into_service_error().meta()
                 )),
             );
         }
