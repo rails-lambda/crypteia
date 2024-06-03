@@ -1,10 +1,8 @@
 FROM mcr.microsoft.com/vscode/devcontainers/rust:0.202.9-bullseye
 
 RUN sudo apt-get update -y \
-    && sudo apt-get upgrade -y 
-
-RUN sudo apt-get install -y zip 
-# RUN sudo apt-get install -y ltrace
+    && sudo apt-get upgrade -y \
+    && sudo apt-get install -y zip ltrace
 
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain nightly
 RUN rustup update \
