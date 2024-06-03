@@ -32,8 +32,10 @@ pub async fn get_envs(env_vars: HashMap<String, String>) -> Result<HashMap<Strin
                     });
                 }
                 Err(error) => log::cloudwatch_metric("ssm", "error", true, Some(error.to_string())),
+                Err(error) => return Err(error), // Return error if parameter is not found
             },
             Err(error) => log::cloudwatch_metric("ssm", "error", true, Some(error.to_string())),
+            Err(error) => return Err(anyhow::anyhow!(error.to_string())), // Return error if task fails
         }
     }
     Ok(results)
