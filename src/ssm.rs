@@ -129,6 +129,7 @@ mod test {
     use super::*;
     use anyhow::Result;
     use aws_sdk_ssm::model::ParameterType;
+    use std::collections::HashMap;
 
     #[tokio::test]
     async fn should_parse() -> Result<()> {
@@ -192,5 +193,15 @@ mod test {
         let results = get_envs(env_vars).await.expect("Should fetch parameters");
         assert_eq!(results, expected);
         Ok(())
+    }
+
+    #[tokio::test]
+    async fn should_fail_if_param_not_found() {
+        let env_vars: HashMap<String, String> = HashMap::from([
+            ("NON_EXISTENT_PARAM".to_string(), "x-crypteia-ssm:/crypteia/v5/myapp/NON_EXISTENT_PARAM".to_string()),
+        ]);
+
+        let result = get_envs(env_vars).await;
+        assert!(result.is_err(), "Expected an error when parameter is not found");
     }
 }
