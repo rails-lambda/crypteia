@@ -9,7 +9,7 @@ ENV PATH="/root/.cargo/bin:${PATH}"
 
 RUN /root/.cargo/bin/rustup update \
     && /root/.cargo/bin/rustup target add aarch64-unknown-linux-gnu
-
+RUN rustup default stable
 RUN mkdir /var/task
 WORKDIR /var/task
 

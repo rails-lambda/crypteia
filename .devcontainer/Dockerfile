@@ -13,6 +13,7 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 RUN rustup update \
     && rustup target add aarch64-unknown-linux-gnu
 
+RUN rustup default stable
 # x86_64 to arm64 support.
 RUN sudo apt-get install -y \
     qemu \

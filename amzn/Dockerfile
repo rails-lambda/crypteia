@@ -6,5 +6,6 @@ ENV PATH="~/.cargo/bin:${PATH}"
 RUN ~/.cargo/bin/rustup update \
     && ~/.cargo/bin/rustup target add aarch64-unknown-linux-gnu
 
+RUN rustup default stable
 ENV CRYPTEIA_BUILD_OS=amzn
 ENV CRYPTEIA_BUILD_TARGET=x86_64-unknown-linux-gnu
