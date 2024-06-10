@@ -1,4 +1,9 @@
-FROM mcr.microsoft.com/vscode/devcontainers/rust:0.202.9-bullseye
+FROM mcr.microsoft.com/devcontainers/rust:1-1-bullseye
+
+RUN sudo apt-get update -y \
+    && sudo apt-get upgrade -y 
+
+RUN sudo apt-get install -y --fix-missing zip 
 
 RUN sudo apt-get update -y \
     && sudo apt-get upgrade -y \
