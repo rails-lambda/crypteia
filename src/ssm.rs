@@ -31,10 +31,8 @@ pub async fn get_envs(env_vars: HashMap<String, String>) -> Result<HashMap<Strin
                         results.insert(key, value);
                     });
                 }
-                Err(error) => log::cloudwatch_metric("ssm", "error", true, Some(error.to_string())),
                 Err(error) => return Err(error), // Return error if parameter is not found
             },
-            Err(error) => log::cloudwatch_metric("ssm", "error", true, Some(error.to_string())),
             Err(error) => return Err(anyhow::anyhow!(error.to_string())), // Return error if task fails
         }
     }
@@ -69,6 +67,7 @@ async fn ssm_get_parameter(
                     name, path, error
                 )),
             );
+            return Err(anyhow::anyhow!(error.to_string())); // Return error
         }
     }
     Ok(items)
@@ -117,7 +116,7 @@ async fn ssm_get_parameters_by_path(
                         name, path, error
                     )),
                 );
-                break;
+                return Err(anyhow::anyhow!(error.to_string())); // Return error
             }
         }
     }
