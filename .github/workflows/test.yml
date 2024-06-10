@@ -1,5 +1,11 @@
 name: Test
-on: [push]
+
+on:
+  push:
+    branches:
+      - "never_happened"
+  workflow_dispatch:
+
 jobs:
   image:
     name: Image
