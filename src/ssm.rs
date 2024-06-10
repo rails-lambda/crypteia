@@ -101,7 +101,7 @@ async fn ssm_get_parameters_by_path(
                         items.insert(env_name, parameter.value.unwrap());
                     }
                 }
-                if response.next_token == None {
+                if response.next_token.is_none() {
                     break;
                 }
                 token = response.next_token;
