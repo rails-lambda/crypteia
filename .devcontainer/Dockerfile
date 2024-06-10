@@ -9,7 +9,7 @@ RUN sudo apt-get update -y \
     && sudo apt-get upgrade -y \
     && sudo apt-get install -y zip ltrace
 
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain nightly
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 RUN rustup update \
     && rustup target add aarch64-unknown-linux-gnu
 
