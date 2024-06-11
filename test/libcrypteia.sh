@@ -37,11 +37,9 @@ assert "./test/libcrypteia/existing-${TEST_LANG}.sh" \
 assert "./test/libcrypteia/_envfile.sh" \
        "PRESENT" "Because existing values does not trigger libcrypteia code."
 
-# fail
 assert "./test/libcrypteia/override-${TEST_LANG}.sh" \
        "1A2B3C4D5E6F"
 
-#fail
 assert "./test/libcrypteia/_envfile.sh" \
        "REMOVED" "Because first x-crypteia access."
 
