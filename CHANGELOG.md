@@ -5,9 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## [2.0.0.pre] - 2024-6-12
 
-## [1.1.1] [1.1.2] - 2023-05-20
+### Changed
+
+- Fail if parameter not found.
+
+## [1.1.2] - 2023-05-20
 
 - Simple major version docker tags. Ex: 1
 
