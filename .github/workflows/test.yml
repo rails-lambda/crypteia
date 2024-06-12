@@ -1,94 +1,16 @@
 name: Test
 on: [push, workflow_dispatch]
 jobs:
-  image:
-    name: Image
+  release:
+    name: Create Release
     runs-on: ubuntu-20.04
+    needs: [debian, amzn]
     steps:
       - uses: actions/checkout@v3
-      - uses: docker/login-action@v2
+      - name: CHANGELOG Entry
+        id: changelog_reader
+        uses: mindsers/changelog-reader-action@v2.0.0
         with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-      - uses: devcontainers/ci@v0.2
-        with:
-          push: always
-          imageName: ghcr.io/rails-lambda/crypteia-ci
-          cacheFrom: ghcr.io/rails-lambda/crypteia-ci
-          runCmd: echo DONE!
-  debian-x86-64:
-    name: Debian x86_64
-    runs-on: ubuntu-20.04
-    needs: image
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Test
-        uses: devcontainers/ci@v0.2
-        with:
-          push: never
-          cacheFrom: ghcr.io/rails-lambda/crypteia-ci
-          runCmd: |
-            ./bin/setup
-            ./bin/test-local
-  debian-arm64:
-    name: Debian arm64
-    runs-on: ubuntu-20.04
-    needs: image
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Test
-        uses: devcontainers/ci@v0.2
-        with:
-          push: never
-          cacheFrom: ghcr.io/rails-lambda/crypteia-ci
-          runCmd: |
-            ./debian/setup-arm64
-            ./debian/test-arm64
-  amazon-x86-64:
-    name: AmazonLinux2/x86_64
-    runs-on: ubuntu-20.04
-    needs: image
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Test
-        uses: devcontainers/ci@v0.2
-        with:
-          push: never
-          cacheFrom: ghcr.io/rails-lambda/crypteia-ci
-          runCmd: |
-            ./amzn/setup
-            ./amzn/test
-  amazon-arm64:
-    name: AmazonLinux2 arm64
-    runs-on: ubuntu-20.04
-    needs: image
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Test
-        uses: devcontainers/ci@v0.2
-        with:
-          push: never
-          cacheFrom: ghcr.io/rails-lambda/crypteia-ci
-          runCmd: |
-            ./amzn/setup-arm64
-            ./amzn/test-arm64
-  ubuntu-py27:
-    name: Ubuntu x86_64 (Python27)
-    runs-on: ubuntu-20.04
-    needs: image
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Test
-        uses: devcontainers/ci@v0.2
-        with:
-          push: never
-          cacheFrom: ghcr.io/rails-lambda/crypteia-ci
-          runCmd: |
-            ./py27/setup
-            ./py27/test
+          validation_level: warn
+          version: ${{ github.event.inputs.version }}
+          path: ./CHANGELOG.md
