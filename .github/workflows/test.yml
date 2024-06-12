@@ -4,7 +4,6 @@ jobs:
   release:
     name: Create Release
     runs-on: ubuntu-20.04
-    needs: [debian, amzn]
     steps:
       - uses: actions/checkout@v3
       - name: CHANGELOG Entry
