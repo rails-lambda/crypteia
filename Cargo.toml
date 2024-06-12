@@ -8,7 +8,7 @@ name = "crypteia"
 
 [lib]
 name = "crypteia"
-crate_type = ["cdylib"]
+crate-type = ["cdylib"]
 
 [dependencies]
 # bin

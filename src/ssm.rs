@@ -31,9 +31,9 @@ pub async fn get_envs(env_vars: HashMap<String, String>) -> Result<HashMap<Strin
                         results.insert(key, value);
                     });
                 }
-                Err(error) => log::cloudwatch_metric("ssm", "error", true, Some(error.to_string())),
+                Err(error) => return Err(error), // Return error if parameter is not found
             },
-            Err(error) => log::cloudwatch_metric("ssm", "error", true, Some(error.to_string())),
+            Err(error) => return Err(anyhow::anyhow!(error.to_string())), // Return error if task fails
         }
     }
     Ok(results)
@@ -67,6 +67,7 @@ async fn ssm_get_parameter(
                     name, path, error
                 )),
             );
+            return Err(anyhow::anyhow!(error.to_string())); // Return error
         }
     }
     Ok(items)
@@ -100,7 +101,7 @@ async fn ssm_get_parameters_by_path(
                         items.insert(env_name, parameter.value.unwrap());
                     }
                 }
-                if response.next_token == None {
+                if response.next_token.is_none() {
                     break;
                 }
                 token = response.next_token;
@@ -115,7 +116,7 @@ async fn ssm_get_parameters_by_path(
                         name, path, error
                     )),
                 );
-                break;
+                return Err(anyhow::anyhow!(error.to_string())); // Return error
             }
         }
     }
@@ -127,6 +128,7 @@ mod test {
     use super::*;
     use anyhow::Result;
     use aws_sdk_ssm::model::ParameterType;
+    use std::collections::HashMap;
 
     #[tokio::test]
     async fn should_parse() -> Result<()> {
@@ -190,5 +192,15 @@ mod test {
         let results = get_envs(env_vars).await.expect("Should fetch parameters");
         assert_eq!(results, expected);
         Ok(())
+    }
+
+    #[tokio::test]
+    async fn should_fail_if_param_not_found() {
+        let env_vars: HashMap<String, String> = HashMap::from([
+            ("NON_EXISTENT_PARAM".to_string(), "x-crypteia-ssm:/crypteia/v5/myapp/NON_EXISTENT_PARAM".to_string()),
+        ]);
+
+        let result = get_envs(env_vars).await;
+        assert!(result.is_err(), "Expected an error when parameter is not found");
     }
 }
