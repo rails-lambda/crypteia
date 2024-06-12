@@ -7,7 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
-## [1.1.1] [1.1.2] - 2023-05-20
+## [2.0.0] - 2024-6-12
+
+- Fail if parameter not found.
+
+## [1.1.2] - 2023-05-20
 
 - Simple major version docker tags. Ex: 1
 
