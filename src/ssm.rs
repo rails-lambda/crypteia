@@ -4,6 +4,7 @@ use futures::future::join_all;
 use std::collections::HashMap;
 use tokio::{spawn, task::JoinHandle};
 
+
 pub async fn get_envs(env_vars: HashMap<String, String>) -> Result<HashMap<String, String>> {
     let sdk_config = aws_config::load_from_env().await;
     let ssm_client: aws_sdk_ssm::Client = aws_sdk_ssm::Client::new(&sdk_config);
@@ -31,7 +32,7 @@ pub async fn get_envs(env_vars: HashMap<String, String>) -> Result<HashMap<Strin
                         results.insert(key, value);
                     });
                 }
-                Err(error) => return Err(error), // Return error if parameter is not found
+                Err(error) => return Err(anyhow::anyhow!(format!("Parameter not found: {}", error))), // Return error if parameter is not found
             },
             Err(error) => return Err(anyhow::anyhow!(error.to_string())), // Return error if task fails
         }
@@ -55,6 +56,8 @@ async fn ssm_get_parameter(
         Ok(response) => {
             if let Some(parameter) = response.parameter {
                 items.insert(name, parameter.value.unwrap());
+            } else {
+                return Err(anyhow::anyhow!("Parameter not found: {}", path));
             }
         }
         Err(error) => {
@@ -120,6 +123,9 @@ async fn ssm_get_parameters_by_path(
             }
         }
     }
+    if items.is_empty() {
+        return Err(anyhow::anyhow!("Parameters not found for path: {}", path));
+    }
     Ok(items)
 }
 
@@ -166,6 +172,7 @@ mod test {
             .overwrite(true)
             .send()
             .await?;
+
         let env_vars: HashMap<String, String> = HashMap::from([
             ("EXISTING".to_string(), "existingvalue".to_string()),
             (
@@ -189,18 +196,53 @@ mod test {
             ("DB_URL".to_string(), "mysql2://u:p@host:3306".to_string()),
             ("NR_KEY".to_string(), "z6y5x4w3v2u1".to_string()),
         ]);
+
+        match get_envs(env_vars.clone()).await {
+            Ok(result) => println!("BLAH :::  {:?}", result),
+            Err(e) => println!("Error: {:?}", e),
+        }
+
         let results = get_envs(env_vars).await.expect("Should fetch parameters");
+    
+        
         assert_eq!(results, expected);
         Ok(())
     }
 
     #[tokio::test]
-    async fn should_fail_if_param_not_found() {
+    async fn should_fail_if_param_not_found() -> Result<()> {
+        let sdk_config = aws_config::load_from_env().await;
+        let ssm_client = aws_sdk_ssm::Client::new(&sdk_config);
+        ssm_client
+            .put_parameter()
+            .name("/crypteia/v5/myapp/SECRET2".to_owned())
+            .value("1A2B3C4D5E6F".to_owned())
+            .r#type(ParameterType::SecureString)
+            .overwrite(true)
+            .send()
+            .await?;
         let env_vars: HashMap<String, String> = HashMap::from([
+            ("EXISTING".to_string(), "existingvalue".to_string()),
+            (
+                "SECRET2".to_string(),
+                "x-crypteia-ssm:/crypteia/v5/myapp/SECRET".to_string(),
+            ),
             ("NON_EXISTENT_PARAM".to_string(), "x-crypteia-ssm:/crypteia/v5/myapp/NON_EXISTENT_PARAM".to_string()),
         ]);
-
         let result = get_envs(env_vars).await;
         assert!(result.is_err(), "Expected an error when parameter is not found");
+        Ok(())
+    }
+
+ 
+
+    #[tokio::test]
+    async fn should_fail_if_param_not_found_in_path() -> Result<()> {
+        let sdk_config = aws_config::load_from_env().await;
+        let ssm_client = aws_sdk_ssm::Client::new(&sdk_config);
+        let result = ssm_get_parameters_by_path(&ssm_client, "NON_EXISTENT_PARAM".to_string(), "/crypteia/v5/myapp/non_existent_path".to_string()).await;
+        assert!(result.is_err(), "Expected an error when parameters are not found for the given path");
+        
+        Ok(())
     }
 }
