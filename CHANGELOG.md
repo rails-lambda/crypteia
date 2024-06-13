@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [2.0.2] - 2024-6-13
+
+- Bubble up error into main
+
 ## [2.0.1] - 2024-6-13
 
 - Revert base img due to version `GLIBC_2.34' not found error.
