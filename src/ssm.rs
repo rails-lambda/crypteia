@@ -166,7 +166,6 @@ mod test {
             .overwrite(true)
             .send()
             .await?;
-
         let env_vars: HashMap<String, String> = HashMap::from([
             ("EXISTING".to_string(), "existingvalue".to_string()),
             (
@@ -190,15 +189,7 @@ mod test {
             ("DB_URL".to_string(), "mysql2://u:p@host:3306".to_string()),
             ("NR_KEY".to_string(), "z6y5x4w3v2u1".to_string()),
         ]);
-
-        match get_envs(env_vars.clone()).await {
-            Ok(result) => println!("BLAH :::  {:?}", result),
-            Err(e) => println!("Error: {:?}", e),
-        }
-
         let results = get_envs(env_vars).await.expect("Should fetch parameters");
-    
-        
         assert_eq!(results, expected);
         Ok(())
     }
