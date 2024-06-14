@@ -10,6 +10,11 @@ const ENV_FILE: &str = "/tmp/crypteia.json";
 #[tokio::main]
 async fn main() -> Result<(), Error> {
     log::cloudwatch_metric("main", "initialized", false, None);
+    
+    if std::env::var("AWS_LAMBDA_FUNCTION_NAME").is_err() {
+        log::cloudwatch_metric("main", "running_outside_lambda", false, None);
+        println!("Running outside of AWS Lambda environment.");
+    }
     let env_vars: HashMap<String, String> = std::env::vars().collect();
     let env_map = ssm::get_envs(env_vars).await?;
     log::cloudwatch_metric("main", "fetched", false, None);
