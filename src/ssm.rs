@@ -4,7 +4,6 @@ use futures::future::join_all;
 use std::collections::HashMap;
 use tokio::{spawn, task::JoinHandle};
 
-
 pub async fn get_envs(env_vars: HashMap<String, String>) -> Result<HashMap<String, String>> {
     let sdk_config = aws_config::load_from_env().await;
     let ssm_client: aws_sdk_ssm::Client = aws_sdk_ssm::Client::new(&sdk_config);
@@ -32,9 +31,9 @@ pub async fn get_envs(env_vars: HashMap<String, String>) -> Result<HashMap<Strin
                         results.insert(key, value);
                     });
                 }
-                Err(error) => return Err(anyhow::anyhow!(format!("Parameter not found: {}", error))), // Return error if parameter is not found
+                Err(error) => log::cloudwatch_metric("ssm", "error", true, Some(error.to_string())),
             },
-            Err(error) => return Err(anyhow::anyhow!(error.to_string())), // Return error if task fails
+            Err(error) => log::cloudwatch_metric("ssm", "error", true, Some(error.to_string())),
         }
     }
     Ok(results)
@@ -56,8 +55,6 @@ async fn ssm_get_parameter(
         Ok(response) => {
             if let Some(parameter) = response.parameter {
                 items.insert(name, parameter.value.unwrap());
-            } else {
-                return Err(anyhow::anyhow!("Parameter not found: {}", path));
             }
         }
         Err(error) => {
@@ -70,7 +67,6 @@ async fn ssm_get_parameter(
                     name, path, error
                 )),
             );
-            return Err(anyhow::anyhow!(error.to_string())); // Return error
         }
     }
     Ok(items)
@@ -104,7 +100,7 @@ async fn ssm_get_parameters_by_path(
                         items.insert(env_name, parameter.value.unwrap());
                     }
                 }
-                if response.next_token.is_none() {
+                if response.next_token == None {
                     break;
                 }
                 token = response.next_token;
@@ -119,15 +115,13 @@ async fn ssm_get_parameters_by_path(
                         name, path, error
                     )),
                 );
-                return Err(anyhow::anyhow!(error.to_string())); // Return error
+                break;
             }
         }
     }
-    if items.is_empty() {
-        return Err(anyhow::anyhow!("Parameters not found for path: {}", path));
-    }
     Ok(items)
 }
+
 
 #[cfg(test)]
 mod test {
@@ -206,43 +200,6 @@ mod test {
     
         
         assert_eq!(results, expected);
-        Ok(())
-    }
-
-    #[tokio::test]
-    async fn should_fail_if_param_not_found() -> Result<()> {
-        let sdk_config = aws_config::load_from_env().await;
-        let ssm_client = aws_sdk_ssm::Client::new(&sdk_config);
-        ssm_client
-            .put_parameter()
-            .name("/crypteia/v5/myapp/SECRET2".to_owned())
-            .value("1A2B3C4D5E6F".to_owned())
-            .r#type(ParameterType::SecureString)
-            .overwrite(true)
-            .send()
-            .await?;
-        let env_vars: HashMap<String, String> = HashMap::from([
-            ("EXISTING".to_string(), "existingvalue".to_string()),
-            (
-                "SECRET2".to_string(),
-                "x-crypteia-ssm:/crypteia/v5/myapp/SECRET".to_string(),
-            ),
-            ("NON_EXISTENT_PARAM".to_string(), "x-crypteia-ssm:/crypteia/v5/myapp/NON_EXISTENT_PARAM".to_string()),
-        ]);
-        let result = get_envs(env_vars).await;
-        assert!(result.is_err(), "Expected an error when parameter is not found");
-        Ok(())
-    }
-
- 
-
-    #[tokio::test]
-    async fn should_fail_if_param_not_found_in_path() -> Result<()> {
-        let sdk_config = aws_config::load_from_env().await;
-        let ssm_client = aws_sdk_ssm::Client::new(&sdk_config);
-        let result = ssm_get_parameters_by_path(&ssm_client, "NON_EXISTENT_PARAM".to_string(), "/crypteia/v5/myapp/non_existent_path".to_string()).await;
-        assert!(result.is_err(), "Expected an error when parameters are not found for the given path");
-        
         Ok(())
     }
 }
