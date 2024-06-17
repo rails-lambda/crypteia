@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/devcontainers/rust:0.202.9-bullseye
+FROM mcr.microsoft.com/devcontainers/rust:1-1-bullseye
 
 RUN sudo apt-get update -y \
     && sudo apt-get upgrade -y 
