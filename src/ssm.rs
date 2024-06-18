@@ -3,9 +3,10 @@ use anyhow::Result;
 use futures::future::join_all;
 use std::collections::HashMap;
 use tokio::{spawn, task::JoinHandle};
+use aws_sdk_ssm::config::BehaviorVersion;
 
 pub async fn get_envs(env_vars: HashMap<String, String>) -> Result<HashMap<String, String>> {
-    let sdk_config = aws_config::load_from_env().await;
+    let sdk_config = aws_config::load_defaults(BehaviorVersion::v2024_03_28()).await;
     let ssm_client: aws_sdk_ssm::Client = aws_sdk_ssm::Client::new(&sdk_config);
     let mut results: HashMap<String, String> = HashMap::new();
     let mut handles: Vec<JoinHandle<Result<HashMap<String, String>>>> = Vec::new();
