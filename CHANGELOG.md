@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [2.0.0] - 2024-6-12
 
 - Fix release workflow and update base image
+- Update cargo packages
+- Improve logging
 
 ## [1.1.2] - 2023-05-20
 
