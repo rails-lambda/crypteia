@@ -15,8 +15,8 @@ crate-type = ["cdylib"]
 anyhow = "1.0.86"
 tokio = { version = "1.38.0", features = ["full"] }
 futures = { version = "0.3.30" }
-aws-config = "0.53.0"
-aws-sdk-ssm = "0.23.0"
+aws-config = "1.5.1"
+aws-sdk-ssm = "1.34.0"
 lambda-extension = "0.10.0"
 # lib
 redhook = "2.0"

@@ -127,7 +127,7 @@ async fn ssm_get_parameters_by_path(
 mod test {
     use super::*;
     use anyhow::Result;
-    use aws_sdk_ssm::model::ParameterType;
+    use aws_sdk_ssm::types::ParameterType; // Corrected import
     use std::collections::HashMap;
 
     #[tokio::test]
