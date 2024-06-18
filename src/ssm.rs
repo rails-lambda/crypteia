@@ -133,7 +133,7 @@ mod test {
 
     #[tokio::test]
     async fn should_parse() -> Result<()> {
-        let sdk_config = aws_config::load_from_env().await;
+        let sdk_config = aws_config::load_defaults(BehaviorVersion::v2024_03_28()).await;
         let ssm_client = aws_sdk_ssm::Client::new(&sdk_config);
         ssm_client
             .put_parameter()
