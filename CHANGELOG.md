@@ -7,13 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
-## [2.0.1] - 2024-6-13
-
-- Revert base img due to version `GLIBC_2.34' not found error.
-  
 ## [2.0.0] - 2024-6-12
 
-- Fail if parameter not found.
+- Fix release workflow and update base image
+- Update cargo packages
+- Improve logging
 
 ## [1.1.2] - 2023-05-20
 

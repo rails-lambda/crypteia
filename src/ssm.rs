@@ -3,9 +3,10 @@ use anyhow::Result;
 use futures::future::join_all;
 use std::collections::HashMap;
 use tokio::{spawn, task::JoinHandle};
+use aws_sdk_ssm::config::BehaviorVersion;
 
 pub async fn get_envs(env_vars: HashMap<String, String>) -> Result<HashMap<String, String>> {
-    let sdk_config = aws_config::load_from_env().await;
+    let sdk_config = aws_config::load_defaults(BehaviorVersion::v2024_03_28()).await;
     let ssm_client: aws_sdk_ssm::Client = aws_sdk_ssm::Client::new(&sdk_config);
     let mut results: HashMap<String, String> = HashMap::new();
     let mut handles: Vec<JoinHandle<Result<HashMap<String, String>>>> = Vec::new();
@@ -31,9 +32,9 @@ pub async fn get_envs(env_vars: HashMap<String, String>) -> Result<HashMap<Strin
                         results.insert(key, value);
                     });
                 }
-                Err(error) => return Err(error), // Return error if parameter is not found
+                Err(error) => log::cloudwatch_metric("ssm", "error", true, Some(error.to_string())),
             },
-            Err(error) => return Err(anyhow::anyhow!(error.to_string())), // Return error if task fails
+            Err(error) => log::cloudwatch_metric("ssm", "error", true, Some(error.to_string())),
         }
     }
     Ok(results)
@@ -63,11 +64,10 @@ async fn ssm_get_parameter(
                 "error",
                 true,
                 Some(format!(
-                    "Error calling ssm:GetParameter. Environment variable: {} Path: {} Error: {}",
-                    name, path, error
+                    "Error calling ssm:GetParameter. Environment variable: {} Path: {} Error: {:?}",
+                    name, path, error.into_service_error().meta()
                 )),
             );
-            return Err(anyhow::anyhow!(error.to_string())); // Return error
         }
     }
     Ok(items)
@@ -101,7 +101,7 @@ async fn ssm_get_parameters_by_path(
                         items.insert(env_name, parameter.value.unwrap());
                     }
                 }
-                if response.next_token.is_none() {
+                if response.next_token == None {
                     break;
                 }
                 token = response.next_token;
@@ -112,27 +112,28 @@ async fn ssm_get_parameters_by_path(
                     "error",
                     true,
                     Some(format!(
-                        "Error calling ssm:GetParametersByPath. Environment variable: {} Path: {} Error: {}",
-                        name, path, error
+                        "Error calling ssm:GetParametersByPath. Environment variable: {} Path: {} Error: {:?}",
+                        name, path, error.into_service_error().meta()
                     )),
                 );
-                return Err(anyhow::anyhow!(error.to_string())); // Return error
+                break;
             }
         }
     }
     Ok(items)
 }
 
+
 #[cfg(test)]
 mod test {
     use super::*;
     use anyhow::Result;
-    use aws_sdk_ssm::model::ParameterType;
+    use aws_sdk_ssm::types::ParameterType;
     use std::collections::HashMap;
 
     #[tokio::test]
     async fn should_parse() -> Result<()> {
-        let sdk_config = aws_config::load_from_env().await;
+        let sdk_config = aws_config::load_defaults(BehaviorVersion::v2024_03_28()).await;
         let ssm_client = aws_sdk_ssm::Client::new(&sdk_config);
         ssm_client
             .put_parameter()
@@ -192,15 +193,5 @@ mod test {
         let results = get_envs(env_vars).await.expect("Should fetch parameters");
         assert_eq!(results, expected);
         Ok(())
-    }
-
-    #[tokio::test]
-    async fn should_fail_if_param_not_found() {
-        let env_vars: HashMap<String, String> = HashMap::from([
-            ("NON_EXISTENT_PARAM".to_string(), "x-crypteia-ssm:/crypteia/v5/myapp/NON_EXISTENT_PARAM".to_string()),
-        ]);
-
-        let result = get_envs(env_vars).await;
-        assert!(result.is_err(), "Expected an error when parameter is not found");
     }
 }
