@@ -279,6 +279,15 @@ Example of logs:
 {"All":"all","ErrorMessage":"","_aws":{"CloudWatchMetrics":[{"Dimensions":[["All","lib"]],"Metrics":[{"Name":"delete_file","Unit":"Count"}],"Namespace":"Crypteia"}],"Timestamp":1670424179575},"delete_file":1,"lib":"lib"}
 ```
 
+If you are using a slim image such as bookworm slim or alpine, you might have missing dependencies. Recent [issue report](https://github.com/rails-lambda/crypteia/issues/51#issuecomment-2739322306) suggests the following addition to your image may help:
+
+```docerfile
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates \
+    && update-ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+```
+
 ## Development
 
 This project is built for [GitHub Codespcaes](https://github.com/features/codespaces) using the [Development Container](https://containers.dev) specification. Even though Codespaces may not be available to everyone, this project's containers are simple for anyone to make work with any editor.
