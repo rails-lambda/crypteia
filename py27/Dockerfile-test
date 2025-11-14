@@ -6,6 +6,7 @@ RUN apt-get update && apt-get install -y software-properties-common && add-apt-r
 RUN apt-get install -y --no-install-recommends \
       ca-certificates \
       curl \
+      libffi-dev \
       python2.7 \
       python2.7-dev \
     && update-alternatives --install /usr/bin/python python /usr/bin/python2.7 2
