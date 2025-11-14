@@ -1,6 +1,6 @@
-FROM mcr.microsoft.com/devcontainers/typescript-node:18
+FROM mcr.microsoft.com/devcontainers/typescript-node:22-bookworm
 
-RUN apt update && apt-get install -y python3-pip
+RUN apt update && apt-get install -y python3-pip && rm -rf /var/lib/apt/lists/*
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 RUN update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1
 
