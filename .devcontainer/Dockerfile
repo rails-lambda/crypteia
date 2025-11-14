@@ -3,22 +3,32 @@ FROM mcr.microsoft.com/devcontainers/rust:2-1-bookworm
 RUN apt-get update -y \
     && apt-get upgrade -y \
     && apt-get install -y --fix-missing --no-install-recommends \
+    \
+    # Zip for packaging
     zip \
+    \
+    # QEMU for multi-architecture support
     qemu-system \
     binfmt-support \
     qemu-user-static \
+    \
+    # Language runtimes for tests
     nodejs \
     ruby \
     php \
     php-common \
     python3-pip \
+    \
+    # Cross-compilation toolchains
     gcc-x86-64-linux-gnu \
     libc6-dev-amd64-cross \
+    gcc-aarch64-linux-gnu \
+    libc6-dev-arm64-cross \
+    \
+    # Clean up, enable QEMU, and set Python alternative in a single layer
     && rm -rf /var/lib/apt/lists/* \
-    && update-binfmts --enable qemu-aarch64
-
-# Easy way to install Python.
-RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1
+    && update-binfmts --enable qemu-aarch64 \
+    && update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 
 # Switch to root to install rust targets and fix permissions
 USER root

@@ -28,6 +28,8 @@ if [ ! "${SKIP_CARGO_TEST}" = "1" ]; then
   cargo test --target "${CRYPTEIA_BUILD_TARGET}" --quiet
 fi
 
+# Language runtime tests now work on both architectures thanks to proper
+# LD_PRELOAD path matching (CRYPTEIA_BUILD_SUFFIX) and installed runtimes
 TEST_LANG=node ./test/libcrypteia.sh
 TEST_LANG=ruby ./test/libcrypteia.sh
 TEST_LANG=php ./test/libcrypteia.sh

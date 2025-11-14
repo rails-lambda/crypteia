@@ -19,11 +19,25 @@ cp "./target/${CRYPTEIA_BUILD_TARGET}/release/crypteia" "./build/${BIN}"
 cp "./target/${CRYPTEIA_BUILD_TARGET}/release/libcrypteia.so" "./build/${LIB}"
 
 cd ./build
-if [ "${CRYPTEIA_BUILD_TARGET}" = "aarch64-unknown-linux-gnu" ]; then
-  strip "$BIN"
-else
-  x86_64-linux-gnu-strip "$BIN"
-fi
+
+# Use appropriate strip command based on target
+case "${CRYPTEIA_BUILD_TARGET}" in
+  aarch64-unknown-linux-gnu)
+    if [ "$(uname -m)" = "aarch64" ]; then
+      strip "$BIN"
+    else
+      aarch64-linux-gnu-strip "$BIN" 2>/dev/null || strip "$BIN"
+    fi
+    ;;
+  x86_64-unknown-linux-gnu)
+    if [ "$(uname -m)" = "x86_64" ]; then
+      strip "$BIN"
+    else
+      x86_64-linux-gnu-strip "$BIN" 2>/dev/null || strip "$BIN"
+    fi
+    ;;
+esac
+
 chmod +x "$BIN"
 zip -r "${BIN}.zip" "$BIN"
 zip -r "libcrypteia-${CRYPTEIA_BUILD_OS}${CRYPTEIA_BUILD_SUFFIX}.zip" "$LIB"
