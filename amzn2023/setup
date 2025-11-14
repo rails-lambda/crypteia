@@ -11,3 +11,4 @@ docker run \
   --entrypoint "./bin/setup" \
   --volume "${PWD}:/var/task" \
   crypteia-lambda-amzn2023
+

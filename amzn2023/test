@@ -21,3 +21,4 @@ docker run \
   --volume "${PWD}:/var/task" \
   --env TEST_LANG=node \
   crypteia-lambda-amzn2023-test
+

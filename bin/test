@@ -14,7 +14,7 @@ if [ -z "${CRYPTEIA_BUILD_TARGET}" ]; then
       export CRYPTEIA_BUILD_TARGET="x86_64-unknown-linux-gnu"
       ;;
     *)
-      echo "Unsupported architecture: $(uname -m)"
+      echo "Unsupported architecture: $(uname -m)" >&2
       exit 1
       ;;
   esac
