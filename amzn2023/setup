@@ -1,0 +1,13 @@
+#!/bin/sh
+set -e
+
+echo "== [amzn2023/Dockerfile] building... =="
+docker build --tag crypteia-lambda-amzn2023 --file amzn2023/Dockerfile .
+
+echo "== [amzn2023/Dockerfile] bin/setup =="
+docker run \
+  --rm \
+  --user root \
+  --entrypoint "./bin/setup" \
+  --volume "${PWD}:/var/task" \
+  crypteia-lambda-amzn2023

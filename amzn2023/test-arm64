@@ -1,0 +1,24 @@
+#!/bin/sh
+set -e
+
+echo "== [amzn2023/Dockerfile-arm64] bin/test =="
+docker run \
+  --rm \
+  --user root \
+  --entrypoint "./test/libcrypteia.sh" \
+  --volume "${PWD}:/var/task" \
+  --env TEST_LANG=node \
+  --platform=linux/arm64 \
+  crypteia-lambda-amzn202V3-arm64
+
+echo "== [amzn2023/Dockerfile-test-arm64] lambda/runtime building... =="
+docker build --tag crypteia-lambda-amzn2023-test-arm64 --file amzn2023/Dockerfile-test-arm64 .
+
+echo "== [amzn2023/Dockerfile-test-arm64] lambda/runtime bin/test =="
+docker run \
+  --rm \
+  --user root \
+  --entrypoint "./test/libcrypteia.sh" \
+  --volume "${PWD}:/var/task" \
+  --env TEST_LANG=node \
+  crypteia-lambda-amzn2023-test-arm64

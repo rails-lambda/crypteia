@@ -100,3 +100,37 @@ jobs:
           runCmd: |
             ./py27/setup
             ./py27/test
+  amazonlinux2023-x86-64:
+    name: AmazonLinux2023/x86_64
+    runs-on: ubuntu-22.04
+    needs: image
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Test
+        uses: devcontainers/ci@v0.2
+        with:
+          push: never
+          cacheFrom: ghcr.io/rails-lambda/crypteia-ci
+          runCmd: |
+            ./amzn2023/setup
+            ./amzn2023/test
+  amazonlinux2023-arm64:
+    name: AmazonLinux2023 arm64
+    runs-on: ubuntu-22.04
+    needs: image
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Test
+        uses: devcontainers/ci@v0.2
+        with:
+          push: never
+          cacheFrom: ghcr.io/rails-lambda/crypteia-ci
+          runCmd: |
+            ./amzn2023/setup-arm64
+            ./amzn2023/test-arm64
