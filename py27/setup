@@ -1,7 +1,16 @@
 #!/bin/sh
 set -e
 
-./bin/setup
+echo "== [py27/Dockerfile] building... =="
+docker build --tag crypteia-debian-py27 --file py27/Dockerfile .
+
+echo "== [py27/Dockerfile] bin/setup =="
+docker run \
+  --rm \
+  --user root \
+  --entrypoint "./bin/setup" \
+  --volume "${PWD}:/var/task" \
+  crypteia-debian-py27
 
 echo "== [py27/Dockerfile-test] building... =="
 docker build --tag crypteia-debian-py27-test --file py27/Dockerfile-test .
