@@ -8,6 +8,7 @@ RUN apt update && apt-get install -y \
     libssl-dev \
     python3-pip \
     pkg-config \
+    zip \
     && rm -rf /var/lib/apt/lists/*
 
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
