@@ -1,10 +1,13 @@
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 
 ENV SHELL=/bin/sh
 
-RUN apt update \
-    && apt-get install -y curl util-linux \
-    && apt-get install -y python2.7 python2.7-dev \
+RUN apt-get update && apt-get install -y software-properties-common && add-apt-repository ppa:deadsnakes/ppa && apt-get update
+RUN apt-get install -y --no-install-recommends \
+      ca-certificates \
+      curl \
+      python2.7 \
+      python2.7-dev \
     && update-alternatives --install /usr/bin/python python /usr/bin/python2.7 2
 
 RUN curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output get-pip.py \
@@ -13,11 +16,7 @@ RUN curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output get-pip.py \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-COPY build/crypteia-debian /opt/extensions/crypteia
-COPY build/libcrypteia-debian.so /opt/lib/libcrypteia.so
-COPY package/opt/crypteia /opt/crypteia
-
-WORKDIR /var/task
+COPY ./package/opt /opt
 
 ENV CRYPTEIA_BUILD_OS=debian
 ENV SKIP_CARGO_TEST=1

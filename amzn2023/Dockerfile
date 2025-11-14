@@ -1,7 +1,7 @@
 FROM public.ecr.aws/amazonlinux/amazonlinux:2023
 
-# Install required build dependencies
-RUN dnf install -y gcc openssl-devel python3-pip util-linux && \
+# Install required build dependencies and Node.js for testing
+RUN dnf install -y gcc openssl-devel python3-pip util-linux nodejs && \
     pip3 install setuptools && \
     dnf clean all
 
