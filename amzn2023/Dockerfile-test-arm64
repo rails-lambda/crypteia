@@ -1,7 +1,9 @@
-FROM public.ecr.aws/lambda/nodejs:20-arm64
+FROM public.ecr.aws/lambda/nodejs:22-arm64
 
 COPY build/crypteia-amzn-arm64 /opt/extensions/crypteia
 COPY build/libcrypteia-amzn-arm64.so /opt/lib/libcrypteia.so
+
+WORKDIR /var/task
 
 ENV CRYPTEIA_BUILD_OS=amzn
 ENV SKIP_CARGO_TEST=1
