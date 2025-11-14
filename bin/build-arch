@@ -16,10 +16,14 @@ cargo build \
   --target "${CRYPTEIA_BUILD_TARGET}" 
 
 cp "./target/${CRYPTEIA_BUILD_TARGET}/release/crypteia" "./build/${BIN}"
-cp ./target/${CRYPTEIA_BUILD_TARGET}/release/libcrypteia.so "./build/${LIB}"
+cp "./target/${CRYPTEIA_BUILD_TARGET}/release/libcrypteia.so" "./build/${LIB}"
 
 cd ./build
-strip "$BIN"
+if [ "${CRYPTEIA_BUILD_TARGET}" = "aarch64-unknown-linux-gnu" ]; then
+  strip "$BIN"
+else
+  x86_64-linux-gnu-strip "$BIN"
+fi
 chmod +x "$BIN"
 zip -r "${BIN}.zip" "$BIN"
 zip -r "libcrypteia-${CRYPTEIA_BUILD_OS}${CRYPTEIA_BUILD_SUFFIX}.zip" "$LIB"
