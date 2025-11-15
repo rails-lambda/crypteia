@@ -6,6 +6,9 @@ RUN apt-get update && apt-get install -y software-properties-common && add-apt-r
 RUN apt-get install -y --no-install-recommends \
       ca-certificates \
       curl \
+      util-linux \
+      file \
+      binutils \
       python2.7 \
       python2.7-dev \
     && update-alternatives --install /usr/bin/python python /usr/bin/python2.7 2
@@ -16,7 +19,11 @@ RUN curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output get-pip.py \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-COPY ./package/opt /opt
+COPY build/crypteia-debian /opt/extensions/crypteia
+COPY build/libcrypteia-debian.so /opt/lib/libcrypteia.so
+COPY package/opt/crypteia /opt/crypteia
+
+WORKDIR /var/task
 
 ENV CRYPTEIA_BUILD_OS=debian
 ENV SKIP_CARGO_TEST=1
