@@ -1,0 +1,16 @@
+FROM public.ecr.aws/lambda/nodejs:22-arm64
+
+COPY build/crypteia-amzn-arm64 /opt/extensions/crypteia
+COPY build/libcrypteia-amzn-arm64.so /opt/lib/libcrypteia.so
+
+WORKDIR /var/task
+
+ENV CRYPTEIA_BUILD_OS=amzn
+ENV SKIP_CARGO_TEST=1
+
+ENV EXISTING=existingvalue
+ENV LD_PRELOAD=/opt/lib/libcrypteia.so
+
+# For assert.sh support
+RUN dnf install -y util-linux && dnf clean all
+

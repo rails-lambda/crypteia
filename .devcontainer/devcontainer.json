@@ -5,7 +5,9 @@
   },
   "features": {
     "ghcr.io/devcontainers/features/aws-cli:latest": {},
-    "ghcr.io/devcontainers/features/docker-in-docker:latest": {},
+    "ghcr.io/devcontainers/features/docker-in-docker:latest": {
+      "install-qemu": false
+    },
     "ghcr.io/customink/codespaces-features/docker-log-level": {},
     "ghcr.io/devcontainers/features/sshd:latest": {}
   },

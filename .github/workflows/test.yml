@@ -3,7 +3,7 @@ on: [push, workflow_dispatch]
 jobs:
   image:
     name: Image
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
       - uses: docker/login-action@v2
@@ -19,7 +19,7 @@ jobs:
           runCmd: echo DONE!
   debian-x86-64:
     name: Debian x86_64
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     needs: image
     steps:
       - name: Checkout
@@ -34,11 +34,15 @@ jobs:
             ./bin/test-local
   debian-arm64:
     name: Debian arm64
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     needs: image
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
       - name: Test
         uses: devcontainers/ci@v0.2
         with:
@@ -49,7 +53,7 @@ jobs:
             ./debian/test-arm64
   amazon-x86-64:
     name: AmazonLinux2/x86_64
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     needs: image
     steps:
       - name: Checkout
@@ -64,11 +68,15 @@ jobs:
             ./amzn/test
   amazon-arm64:
     name: AmazonLinux2 arm64
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     needs: image
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
       - name: Test
         uses: devcontainers/ci@v0.2
         with:
@@ -79,7 +87,7 @@ jobs:
             ./amzn/test-arm64
   ubuntu-py27:
     name: Ubuntu x86_64 (Python27)
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     needs: image
     steps:
       - name: Checkout
@@ -92,3 +100,37 @@ jobs:
           runCmd: |
             ./py27/setup
             ./py27/test
+  amazonlinux2023-x86-64:
+    name: AmazonLinux2023/x86_64
+    runs-on: ubuntu-22.04
+    needs: image
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Test
+        uses: devcontainers/ci@v0.2
+        with:
+          push: never
+          cacheFrom: ghcr.io/rails-lambda/crypteia-ci
+          runCmd: |
+            ./amzn2023/setup
+            ./amzn2023/test
+  amazonlinux2023-arm64:
+    name: AmazonLinux2023 arm64
+    runs-on: ubuntu-22.04
+    needs: image
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Test
+        uses: devcontainers/ci@v0.2
+        with:
+          push: never
+          cacheFrom: ghcr.io/rails-lambda/crypteia-ci
+          runCmd: |
+            ./amzn2023/setup-arm64
+            ./amzn2023/test-arm64

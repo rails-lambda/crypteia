@@ -1,8 +1,14 @@
 #!/bin/sh
 set -e
 
-docker run \
-  --rm \
-  --privileged \
-  multiarch/qemu-user-static \
-  --reset -p yes 
+# Wait for docker to be ready
+TIMEOUT=30
+while ! docker info > /dev/null 2>&1; do
+    echo "Waiting for docker daemon..."
+    sleep 1
+    TIMEOUT=$((TIMEOUT - 1))
+    if [ $TIMEOUT -le 0 ]; then
+        echo "Docker daemon failed to start"
+        exit 1
+    fi
+done 

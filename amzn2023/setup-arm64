@@ -1,0 +1,14 @@
+#!/bin/sh
+set -e
+
+echo "== [amzn2023/Dockerfile-arm64] building... =="
+docker build --platform linux/arm64 --tag crypteia-lambda-amzn2023-arm64 --file amzn2023/Dockerfile-arm64 .
+
+echo "== [amzn2023/Dockerfile-arm64] bin/setup =="
+docker run \
+  --platform linux/arm64 \
+  --rm \
+  --user root \
+  --entrypoint "./bin/setup" \
+  --volume "${PWD}:/var/task" \
+  crypteia-lambda-amzn2023-arm64
