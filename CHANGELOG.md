@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [2.1.0] - 2025-12-02
+
+### Added
+
+- Amazon Linux 2023 support (x86_64 and arm64)
+- Architecture auto-detection in build/test scripts
+
+### Changed
+
+- Upgrade dev container from Debian 11 (Bullseye) to Debian 12 (Bookworm)
+- Upgrade Debian arm64 test image to Node.js 22 (LTS)
+- Update GitHub Actions runners to ubuntu-22.04
+- Enable language runtime tests on all architectures
+- Pin wrapt to `<1.15.0` for Python 2.7 compatibility
+
+### Fixed
+
+- ARM64 release builds via QEMU emulation setup
+- Disk space issues in release workflow
+
 ## [2.0.0] - 2024-6-12
 
 - Fix release workflow and update base image
