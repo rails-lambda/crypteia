@@ -29,6 +29,11 @@ jobs:
     needs: image
     steps:
       - uses: actions/checkout@v4
+      - name: Free Disk Space
+        uses: jlord/free-disk-space@main
+        with:
+          tool-cache: true
+          docker-images: false
       - uses: docker/setup-qemu-action@v3
       - uses: devcontainers/ci@v0.2
         env:
@@ -46,6 +51,11 @@ jobs:
     needs: image
     steps:
       - uses: actions/checkout@v4
+      - name: Free Disk Space
+        uses: jlord/free-disk-space@main
+        with:
+          tool-cache: true
+          docker-images: false
       - uses: docker/setup-qemu-action@v3
       - uses: devcontainers/ci@v0.2
         env:
