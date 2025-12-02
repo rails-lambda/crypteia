@@ -30,7 +30,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Free Disk Space
-        uses: jlord/free-disk-space@main
+        uses: jlumbroso/free-disk-space@main
         with:
           tool-cache: true
           docker-images: false
@@ -52,7 +52,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Free Disk Space
-        uses: jlord/free-disk-space@main
+        uses: jlumbroso/free-disk-space@main
         with:
           tool-cache: true
           docker-images: false
