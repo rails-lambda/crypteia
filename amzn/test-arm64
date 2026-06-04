@@ -12,7 +12,7 @@ docker run \
   crypteia-lambda-nodejs-arm64
 
 echo "== [amzn/Dockerfile-test-arm64] lambda/runtime building... =="
-docker build --tag crypteia-lambda-nodejs-test-arm64 --file amzn/Dockerfile-test-arm64 .
+docker build --platform linux/arm64 --tag crypteia-lambda-nodejs-test-arm64 --file amzn/Dockerfile-test-arm64 .
 
 echo "== [amzn/Dockerfile-test-arm64] lambda/runtime bin/test =="
 docker run \

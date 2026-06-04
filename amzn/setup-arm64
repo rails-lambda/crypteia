@@ -2,7 +2,7 @@
 set -e
 
 echo "== [amzn/Dockerfile-arm64] sam/build building... =="
-docker build --tag crypteia-lambda-nodejs-arm64 --file amzn/Dockerfile-arm64 .
+docker build --platform linux/arm64 --tag crypteia-lambda-nodejs-arm64 --file amzn/Dockerfile-arm64 .
 
 echo "== [amzn/Dockerfile-arm64] sam/build bin/setup =="
 docker run \
