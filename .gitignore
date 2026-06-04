@@ -7,4 +7,5 @@ outputs.json
 python/crypteia/build
 python/crypteia/src/*.egg-info
 runteststest
+awskeys.txt
 .DS_Store
