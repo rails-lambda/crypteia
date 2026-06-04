@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [2.2.0] - 2026-06-04
+
+### Changed
+
+- Update Rust toolchain to 1.96
+- Bump all Rust dependencies (anyhow, tokio, futures, aws-config, aws-sdk-ssm, libc, lazy_static, serde_json)
+
+### Fixed
+
+- ARM64 docker build missing `--platform` flag
+- Amazon Linux 2 build: install pip and wheel
+
 ## [2.1.0] - 2025-12-02
 
 ### Added
