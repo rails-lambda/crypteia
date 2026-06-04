@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [2.2.1] - 2026-06-04
+
+### Security
+
+- Remove vulnerable `rustls-webpki <0.103.13` (GHSA-82j2-j2ch-gfr8, CVSS 7.5 High — DoS via panic on malformed CRL BIT STRING). Disabled the redundant legacy `rustls` default feature on `aws-sdk-ssm`, which was pulling in a second TLS stack (`rustls 0.21` / `hyper 0.14`) alongside the already-present `rustls 0.23` stack.
+
 ## [2.2.0] - 2026-06-04
 
 ### Changed
