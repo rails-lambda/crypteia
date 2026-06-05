@@ -1,6 +1,6 @@
 [package]
 name = "crypteia"
-version = "2.2.0"
+version = "2.2.1"
 edition = "2021"
 
 [[bin]]
@@ -16,7 +16,7 @@ anyhow = "1.0.102"
 tokio = { version = "1.52.3", features = ["full"] }
 futures = { version = "0.3.32" }
 aws-config = "1.8.18"
-aws-sdk-ssm = "1.112.0"
+aws-sdk-ssm = { version = "1.112.0", default-features = false, features = ["default-https-client", "rt-tokio"] }
 lambda-extension = "0.10.0"
 # lib
 redhook = "2.0"
